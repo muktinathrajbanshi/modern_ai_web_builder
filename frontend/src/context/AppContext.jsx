@@ -7,7 +7,16 @@ export function AppContextProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
 
-  return <AppContext.Provider value={{}}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider
+      value={{
+        user,
+        loadingUser,
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
 }
 
 export function useAppContext() {
