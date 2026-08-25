@@ -4,6 +4,7 @@ import { AuthLayout, GuestLayout } from "./pages/Layout";
 import AuthPage from "./pages/AuthPage";
 import BuilderPage from "./pages/BuilderPage";
 import PreviewPage from "./pages/PreviewPage";
+import HomePage from "./pages/HomePage";
 
 const App = () => {
   return (
