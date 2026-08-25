@@ -12,6 +12,7 @@ export function AuthLayout() {
   return <Outlet />;
 }
 
+
 export function GuestLayout() {
   const { user, loadingUser } = useAppContext();
 
