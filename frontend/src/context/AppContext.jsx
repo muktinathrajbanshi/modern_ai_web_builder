@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import api from "../api/api";
 
 const AppContext = createContext(undefined);
@@ -12,13 +12,17 @@ export function AppContextProvider({ children }) {
   const checkSession = async () => {
     try {
       const { data } = await api.get("/api/auth/me");
-      setUser(data.user);
+      // setUser(data.user);
     } catch (error) {
       setUser(null);
     } finally {
       setLoadingUser(false);
     }
   };
+
+  useEffect(() => {
+    checkSession();
+  }, [checkSession]);
 
   return (
     <AppContext.Provider
