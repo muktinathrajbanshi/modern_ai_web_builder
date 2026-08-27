@@ -10,6 +10,13 @@ const AuthPage = ({ mode }) => {
       <LoginLeft />
 
       {/* Right Panel - Form  */}
+      <div className="flex-1 flex items-center justify-center p-8">
+        <div className="w-full max-w-sm">
+          <div className="mb-10">
+            <h1>{isLogin ? "Sign in" : "Create an account"}</h1>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
