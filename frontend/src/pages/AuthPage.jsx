@@ -13,7 +13,14 @@ const AuthPage = ({ mode }) => {
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-sm">
           <div className="mb-10">
-            <h1>{isLogin ? "Sign in" : "Create an account"}</h1>
+            <h1 className="text-3xl font-medium tracking-light text-zinc-900 mb-1.5 font-sans">
+              {isLogin ? "Sign in" : "Create an account"}
+            </h1>
+            <p className="text-sm text-zinc-400">
+              {isLogin
+                ? "Enter your credentials to access your website builder."
+                : "Get started by entering your registration details."}
+            </p>
           </div>
         </div>
       </div>
