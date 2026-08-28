@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import LoginLeft from "../components/LoginLeft";
+import Link from "react-router-dom";
 
 const AuthPage = ({ mode }) => {
   const isLogin = mode === "login";
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   return (
     <div className="min-h-screen bg-white flex text-zinc-900 font-sans">
@@ -22,6 +26,26 @@ const AuthPage = ({ mode }) => {
                 : "Get started by entering your registration details."}
             </p>
           </div>
+
+          {error && (
+            <div className="mb-6 p-3 border border-red-200 bg-red-50 text-red-700 text-xs rounded">
+              {error}
+            </div>
+          )}
+          <form action="">
+            <p>
+              {isLogin ? (
+                <>
+                  New to BuilderAi?{" "}
+                  <Link to="/register" className="text-zinc-900 font-medium">
+                    Create an account
+                  </Link>
+                </>
+              ) : (
+                <></>
+              )}
+            </p>
+          </form>
         </div>
       </div>
     </div>
