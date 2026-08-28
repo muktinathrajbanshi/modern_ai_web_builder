@@ -47,9 +47,27 @@ const AuthPage = ({ mode }) => {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
+                  className="w-full pl-2 py-2 border-b border-zinc-200 focus:outline-none focus:border-zinc-950 text-sm
+                  text-zinc-900 bg-transparent placeholder-zinc-300 transition-colors"
+                  placeholder="Muktinath Rajbanshi"
                 />
               </div>
             )}
+
+            <div>
+              <label className="block text-[11px] font-semibold text-zinc-400 uppercase tracking-widest mb-2">
+                Email Address
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full pl-2 py-2 border-b border-zinc-200 focus:outline-none focus:border-zinc-950 text-sm
+                  text-zinc-900 bg-transparent placeholder-zinc-300 transition-colors"
+                placeholder="email@example.com"
+              />
+            </div>
           </form>
 
           <p>
