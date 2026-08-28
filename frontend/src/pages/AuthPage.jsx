@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import LoginLeft from "../components/LoginLeft";
-import Link from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const AuthPage = ({ mode }) => {
   const isLogin = mode === "login";
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="min-h-screen bg-white flex text-zinc-900 font-sans">
@@ -32,20 +36,39 @@ const AuthPage = ({ mode }) => {
               {error}
             </div>
           )}
-          <form action="">
-            <p>
-              {isLogin ? (
-                <>
-                  New to BuilderAi?{" "}
-                  <Link to="/register" className="text-zinc-900 font-medium">
-                    Create an account
-                  </Link>
-                </>
-              ) : (
-                <></>
-              )}
-            </p>
+          <form className="space-y-6">
+            {!isLogin && (
+              <div>
+                <label className="block text-[11px] font-semibold text-zinc-400 uppercase tracking-widest mb-2">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+            )}
           </form>
+
+          <p>
+            {isLogin ? (
+              <>
+                New to BuilderAi?{" "}
+                <Link to="/register" className="text-zinc-900 font-medium">
+                  Create an account
+                </Link>
+              </>
+            ) : (
+              <>
+                New to BuilderAi?{" "}
+                <Link to="/login" className="text-zinc-900 font-medium">
+                  Sign in here
+                </Link>
+              </>
+            )}
+          </p>
         </div>
       </div>
     </div>
