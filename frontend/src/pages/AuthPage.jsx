@@ -68,6 +68,30 @@ const AuthPage = ({ mode }) => {
                 placeholder="email@example.com"
               />
             </div>
+
+            <div>
+              <label className="block text-[11px] font-semibold text-zinc-400 uppercase tracking-widest mb-2">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full pl-2 py-2 border-b border-zinc-200 focus:outline-none focus:border-zinc-950 text-sm
+                  text-zinc-900 bg-transparent placeholder-zinc-300 pr-8"
+                  placeholder="........."
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute
+              right-2 top-1/2 -translate-y-1/2 text-zinc-300 hover:text-zinc-600 flex items-center justify-center
+              cursor-pointer transition-colors"
+                ></button>
+              </div>
+            </div>
           </form>
 
           <p>
