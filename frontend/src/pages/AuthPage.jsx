@@ -99,6 +99,14 @@ const AuthPage = ({ mode }) => {
                 </button>
               </div>
             </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-2.5 bg-linear-to-br from-red-600 to-amber-600
+            text-white font-semibold hover:scale-102 disabled:opacity-40 flex items-center justify-center
+            cursor-pointer mt-2 rounded-lg transition-all"
+            ></button>
           </form>
 
           <p>
