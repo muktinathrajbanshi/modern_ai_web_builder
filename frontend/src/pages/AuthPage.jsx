@@ -1,6 +1,7 @@
 import { useState } from "react";
 import LoginLeft from "../components/LoginLeft";
 import { Link } from "react-router-dom";
+import { EyeOffIcon, EyeIcon } from "lucide-react";
 
 const AuthPage = ({ mode }) => {
   const isLogin = mode === "login";
@@ -89,7 +90,13 @@ const AuthPage = ({ mode }) => {
                   className="absolute
               right-2 top-1/2 -translate-y-1/2 text-zinc-300 hover:text-zinc-600 flex items-center justify-center
               cursor-pointer transition-colors"
-                ></button>
+                >
+                  {showPassword ? (
+                    <EyeOffIcon size={14} />
+                  ) : (
+                    <EyeIcon size={14} />
+                  )}
+                </button>
               </div>
             </div>
           </form>
