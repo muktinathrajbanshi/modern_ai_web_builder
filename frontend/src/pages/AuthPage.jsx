@@ -1,7 +1,7 @@
 import { useState } from "react";
 import LoginLeft from "../components/LoginLeft";
 import { Link } from "react-router-dom";
-import { EyeOffIcon, EyeIcon } from "lucide-react";
+import { EyeOffIcon, EyeIcon, Loader2Icon } from "lucide-react";
 
 const AuthPage = ({ mode }) => {
   const isLogin = mode === "login";
@@ -106,10 +106,15 @@ const AuthPage = ({ mode }) => {
               className="w-full py-2.5 bg-linear-to-br from-red-600 to-amber-600
             text-white font-semibold hover:scale-102 disabled:opacity-40 flex items-center justify-center
             cursor-pointer mt-2 rounded-lg transition-all"
-            ></button>
+            >
+              {loading && (
+                <Loader2Icon className="animate-spin h-3.5 w-3.5 mr-2" />
+              )}
+              {isLogin ? "Sign in" : "Sign up"}
+            </button>
           </form>
 
-          <p>
+          <p className="text-sm text-zinc-400 mt-8 pt-6 border-t border-zinc-100 font-sans">
             {isLogin ? (
               <>
                 New to BuilderAi?{" "}
