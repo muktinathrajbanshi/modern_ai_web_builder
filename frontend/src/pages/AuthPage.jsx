@@ -1,11 +1,12 @@
 import { useState } from "react";
 import LoginLeft from "../components/LoginLeft";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { EyeOffIcon, EyeIcon, Loader2Icon } from "lucide-react";
 import { useAppContext } from "../context/AppContext";
 
 const AuthPage = ({ mode }) => {
   const { login, register } = useAppContext();
+  const navigate = useNavigate();
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,7 +28,17 @@ const AuthPage = ({ mode }) => {
       } else {
         await register(name, email, password);
       }
-    } catch (error) {}
+      navigate("/");
+    } catch (err) {
+      setError(
+        err.message ||
+          (mode === "login"
+            ? "Invalid email or password"
+            : "Registration failed"),
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -54,7 +65,7 @@ const AuthPage = ({ mode }) => {
               {error}
             </div>
           )}
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             {!isLogin && (
               <div>
                 <label className="block text-[11px] font-semibold text-zinc-400 uppercase tracking-widest mb-2">
