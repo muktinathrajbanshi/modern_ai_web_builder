@@ -64,6 +64,8 @@ export function AppContextProvider({ children }) {
       value={{
         user,
         loadingUser,
+        login,
+        register,
       }}
     >
       {children}

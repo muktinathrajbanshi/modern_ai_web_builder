@@ -2,9 +2,10 @@ import { useState } from "react";
 import LoginLeft from "../components/LoginLeft";
 import { Link } from "react-router-dom";
 import { EyeOffIcon, EyeIcon, Loader2Icon } from "lucide-react";
+import { useAppContext } from "../context/AppContext";
 
 const AuthPage = ({ mode }) => {
-  const isLogin = mode === "login";
+  const { login, register } = useAppContext();
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -12,6 +13,14 @@ const AuthPage = ({ mode }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const isLogin = mode === "login";
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+  };
 
   return (
     <div className="min-h-screen bg-white flex text-zinc-900 font-sans">
