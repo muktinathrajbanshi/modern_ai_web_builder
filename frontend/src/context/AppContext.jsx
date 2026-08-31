@@ -37,6 +37,21 @@ export function AppContextProvider({ children }) {
     } catch (err) {
       console.error("Login failed:", err);
       const errMsg = err?.response?.data?.error || "Invalid email or password";
+      toast.error(errMsg);
+      throw new Error(errMsg);
+    }
+  };
+  const ragister = async (name, email, password) => {
+    try {
+      const { data } = await api.post("/api/auth/login", { email, password });
+      setUser(data.user);
+      toast.success("Welcome back!");
+      navigate("/");
+    } catch (err) {
+      console.error("Login failed:", err);
+      const errMsg = err?.response?.data?.error || "Invalid email or password";
+      toast.error(errMsg);
+      throw new Error(errMsg);
     }
   };
 
