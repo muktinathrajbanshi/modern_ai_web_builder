@@ -41,15 +41,19 @@ export function AppContextProvider({ children }) {
       throw new Error(errMsg);
     }
   };
-  const ragister = async (name, email, password) => {
+  const register = async (name, email, password) => {
     try {
-      const { data } = await api.post("/api/auth/login", { email, password });
+      const { data } = await api.post("/api/auth/register", {
+        name,
+        email,
+        password,
+      });
       setUser(data.user);
-      toast.success("Welcome back!");
+      toast.success("Account created successfully!");
       navigate("/");
     } catch (err) {
-      console.error("Login failed:", err);
-      const errMsg = err?.response?.data?.error || "Invalid email or password";
+      console.error("Registration failed:", err);
+      const errMsg = err?.response?.data?.error || "Registration failed";
       toast.error(errMsg);
       throw new Error(errMsg);
     }
