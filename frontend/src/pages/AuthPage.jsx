@@ -20,6 +20,14 @@ const AuthPage = ({ mode }) => {
     e.preventDefault();
     setError("");
     setLoading(true);
+
+    try {
+      if (mode === "login") {
+        await login(email, password);
+      } else {
+        await register(name, email, password);
+      }
+    } catch (error) {}
   };
 
   return (
