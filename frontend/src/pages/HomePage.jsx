@@ -41,6 +41,15 @@ const HomePage = () => {
             </span>
             <span>Create your first project for free.</span>
           </div>
+
+          {/* Title  */}
+          <h1 className="text-center text-4xl md:text-6xl font-medium mt-4 max-w-2xl text-white">
+            Let's build your app together
+          </h1>
+          <p className="text-center text-sm md:text-base max-w-xl mt-4 text-white/65 leading-relaxed">
+            Describe your idea and watch AI design, structure and launch your
+            website instantly. No coding required.
+          </p>
         </div>
       </div>
     </div>
