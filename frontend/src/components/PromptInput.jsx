@@ -9,8 +9,22 @@ const PromptInput = ({
   variant = "default",
 }) => {
   const [value, setValue] = useState("");
+  const textareaRef = useRef(null);
 
-  const textareaRef = useRef(null)
+  const handleSubmit = (e) => {
+    if(e) e.preventDefault()
+        const trimmed = value.trim()
+
+    if(!trimmed || loading) return;
+    onsubmit(trimmed)
+    setValue("")
+  }
+
+  const handleKeyDown = (e) => {
+    if(e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+    }
+  }
 
   if(variant === "glass") {
     return (
