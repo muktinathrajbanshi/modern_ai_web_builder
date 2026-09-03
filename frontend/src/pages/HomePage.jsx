@@ -50,6 +50,11 @@ const HomePage = () => {
             Describe your idea and watch AI design, structure and launch your
             website instantly. No coding required.
           </p>
+
+          {/* Prompt input with glassmorphic variant  */}
+          <div className="w-full mt-6">
+            
+          </div>
         </div>
       </div>
     </div>
