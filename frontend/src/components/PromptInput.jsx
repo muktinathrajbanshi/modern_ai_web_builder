@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { CloudUploadIcon } from "lucide-react";
+import {
+  ArrowRightIcon,
+  CloudUploadIcon,
+  Loader2Icon,
+  MicIcon,
+} from "lucide-react";
 
 const PromptInput = ({
   onSubmit,
@@ -56,6 +61,26 @@ const PromptInput = ({
             <input type="file" id="file" hidden />
             <CloudUploadIcon size={18} />
           </label>
+          <div className="flex items-center justify-end gap-2">
+            <button
+              type="button"
+              className="flex items-center justify-center p-1 text-white/70 hover:text-white cursor-pointer"
+            >
+              <MicIcon size={18} />
+            </button>
+
+            <button
+              type="submit"
+              disabled={!value.trim() || loading}
+              className="flex items-center justify-center p-1.5 rounded-full bg-red-600 text-white hover:bg-red-700 disabled:opacity-40 cursor-pointer"
+            >
+              {loading ? (
+                <Loader2Icon size={18} className="animate-spin" />
+              ) : (
+                <ArrowRightIcon size={18} />
+              )}
+            </button>
+          </div>
         </div>
       </form>
     );
