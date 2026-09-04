@@ -86,7 +86,31 @@ const PromptInput = ({
     );
   }
 
-  return <div></div>;
+  return (
+    <div
+      className={`bg-white border border-zinc-200 rounded-xl flex items-end gap-2
+    focus-within:ring-1 focus-within:ring-zinc-300 transition ${large ? "p-4" : ""}`}
+    >
+      <textarea
+        ref={textareaRef}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={handleKeyDown}
+        placeholder={placeholder}
+        disabled={loading}
+        rows={large ? 5 : 1}
+        className={`flex-1 bg-transparent border-none outline-none resize-none text-zinc-900 placeholder:text-zinc-400 ${large ? "text-base" : "text-sm"}`}
+      />
+
+      <button>
+        {loading ? (
+          <Loader2Icon size={large ? 20 : 15} className="animate-spin" />
+        ) : (
+          <ArrowRightIcon />
+        )}
+      </button>
+    </div>
+  );
 };
 
 export default PromptInput;
