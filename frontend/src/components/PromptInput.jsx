@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowRightIcon,
   CloudUploadIcon,
@@ -16,6 +16,12 @@ const PromptInput = ({
 }) => {
   const [value, setValue] = useState("");
   const textareaRef = useRef(null);
+
+  useEffect(() => {
+    if (autoFocus && textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  }, [autoFocus]);
 
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
@@ -102,7 +108,12 @@ const PromptInput = ({
         className={`flex-1 bg-transparent border-none outline-none resize-none text-zinc-900 placeholder:text-zinc-400 ${large ? "text-base" : "text-sm"}`}
       />
 
-      <button>
+      <button
+        onClick={() => handleSubmit()}
+        disabled={!value.trim() || loading}
+        className="inline-flex items-center justify-center bg-zinc-950 text-white hover:bg-zinc-800 disabled:opacity-40 cursor-pointer rounded-full shrink-0"
+        style={{ width: large ? 36 : 24, height: large ? 36 : 24 }}
+      >
         {loading ? (
           <Loader2Icon size={large ? 20 : 15} className="animate-spin" />
         ) : (
