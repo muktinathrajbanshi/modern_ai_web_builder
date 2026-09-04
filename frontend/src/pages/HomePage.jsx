@@ -1,5 +1,6 @@
 import React from "react";
 import { useAppContext } from "../context/AppContext";
+import PromptInput from "../components/PromptInput";
 
 const HomePage = () => {
   const { user } = useAppContext();
@@ -53,7 +54,7 @@ const HomePage = () => {
 
           {/* Prompt input with glassmorphic variant  */}
           <div className="w-full mt-6">
-            
+            <PromptInput />
           </div>
         </div>
       </div>
