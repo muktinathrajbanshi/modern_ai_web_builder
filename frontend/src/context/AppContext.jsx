@@ -83,6 +83,20 @@ export function AppContextProvider({ children }) {
     }
   };
 
+  // Projects Actions
+  const loadProjects = async () => {
+    if (!user) return;
+    try {
+      const { data } = await api.get("/api/projects");
+      setProjects(data);
+    } catch (err) {
+      console.error("Failed to list projects:", err);
+      toast.error("Failed to load projects list");
+    } finally {
+      setLoadingProjects(false);
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
