@@ -69,6 +69,20 @@ export function AppContextProvider({ children }) {
     }
   };
 
+  const logout = async () => {
+    try {
+      await api.post("/api/auth/logout");
+      setUser(null);
+      setProjects([]);
+      setActiveProject(null);
+      toast.success("Logged out successfully");
+      navigate("/login");
+    } catch (err) {
+      console.error("Logout failed:", err);
+      toast.error("Logout failed");
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
