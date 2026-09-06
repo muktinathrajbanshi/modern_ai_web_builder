@@ -97,6 +97,23 @@ export function AppContextProvider({ children }) {
     }
   };
 
+  const loadProject = async (id, silent = false) => {
+    if (!user) return;
+    if (!silent) setLoadingActiveProject(true);
+    try {
+      const { data } = await api.get(`/api/projects/${id}`);
+      setActiveProject(data);
+
+      // Default file selection
+      const files = Object.keys(data.files);
+      if (files.length > 0) {
+        setActiveFile((prev) => {
+          if (files.includes(prev)) return prev;
+        });
+      }
+    } catch (error) {}
+  };
+
   return (
     <AppContext.Provider
       value={{
