@@ -109,10 +109,37 @@ export function AppContextProvider({ children }) {
       if (files.length > 0) {
         setActiveFile((prev) => {
           if (files.includes(prev)) return prev;
+          if (files.includes("/App.js")) return "/App.js";
+          return files[0];
         });
       }
-    } catch (error) {}
+    } catch (err) {
+      console.error("Failed to load project:", err);
+      if (!silent) {
+        toast.error("Failed to load project details");
+        navigate("/");
+      }
+    } finally {
+      if (!silent) setLoadingActiveProject(false);
+    }
   };
+
+  // Automatically poll active project status if generating or pending
+  useEffect(() => {
+    if (!activeProject?._id || !user) return;
+
+    const isOngoing =
+      activeProject.status === "generating" ||
+      activeProject.status === "pending" ||
+      activeProject.status === "revising";
+
+    if (isOngoing) {
+      setChatLoading(true);
+      const interval = setInterval(() => {
+        loadProject();
+      }, 2000);
+    }
+  }, [activeProject?._id, activeProject?.status, loadProject, user]);
 
   return (
     <AppContext.Provider
