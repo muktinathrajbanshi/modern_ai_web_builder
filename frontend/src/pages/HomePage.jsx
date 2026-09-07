@@ -3,7 +3,8 @@ import { useAppContext } from "../context/AppContext";
 import PromptInput from "../components/PromptInput";
 
 const HomePage = () => {
-  const { user } = useAppContext();
+  const { user, projects, loadingProjects, generatingProject, loadProjects } =
+    useAppContext();
 
   return (
     <div
