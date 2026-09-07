@@ -176,14 +176,13 @@ export function AppContextProvider({ children }) {
       try {
         const { data } = await api.delete(`/api/projects/${id}`);
         setProjects((prev) => prev.filter((p) => p._id !== id));
+        toast.success("Project deleted successfully");
       } catch (err) {
-        console.error("Failed to generate project:", err);
-        toast.error(err?.response?.data?.error || "Failed to generate project");
-      } finally {
-        setGeneratingProject(false);
+        console.error("Failed to delete project:", err);
+        toast.error("Failed to delete project");
       }
     },
-    [navigate, user],
+    [user],
   );
 
   return (
@@ -193,6 +192,20 @@ export function AppContextProvider({ children }) {
         loadingUser,
         login,
         register,
+        projects,
+        loadingProjects,
+        activeProject,
+        loadingActiveProject,
+        chatLoading,
+        generatingProject,
+        activeFile,
+        showCode,
+        setActiveFile,
+        setShowCode,
+        loadProjects,
+        loadProject,
+        handleGenerate,
+        handleDelete,
       }}
     >
       {children}
