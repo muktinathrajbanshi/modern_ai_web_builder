@@ -169,6 +169,23 @@ export function AppContextProvider({ children }) {
     [navigate, user],
   );
 
+  const handleDelete = useCallback(
+    async (id) => {
+      if (!user) return;
+
+      try {
+        const { data } = await api.delete(`/api/projects/${id}`);
+        setProjects((prev) => prev.filter((p) => p._id !== id));
+      } catch (err) {
+        console.error("Failed to generate project:", err);
+        toast.error(err?.response?.data?.error || "Failed to generate project");
+      } finally {
+        setGeneratingProject(false);
+      }
+    },
+    [navigate, user],
+  );
+
   return (
     <AppContext.Provider
       value={{
