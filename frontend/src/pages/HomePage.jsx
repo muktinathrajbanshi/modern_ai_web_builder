@@ -77,17 +77,32 @@ const HomePage = () => {
           {/* Scrolling Marquee tags  */}
           <div className="masked-marquee w-full mt-4 max-w-2xl overflow-hidden py-1">
             <div className="animate-marquee gap-3">
-              {homeTags.map(() => (
+              {homeTags.map((tag, i) => (
                 <button
                   key={i}
                   onClick={() => handleGenerate(tag)}
                   disabled={generatingProject}
+                  className="px-4 py-1.5 border rounded-full text-sm text-white bg-white/10
+                  border-white/25 hover:bg-white/20 transition cursor-pointer shrink-0 font-medium"
                 >
                   {tag}
                 </button>
               ))}
             </div>
           </div>
+
+          {/* All Projects  */}
+          {!loadProjects && projects.length > 0 && (
+            <div className="mt-12 w-full">
+              <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10">
+                <p>All Projects</p>
+                <span>
+                  {projects.length}{" "}
+                  {projects.length === 1 ? "project" : "projects"}
+                </span>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
