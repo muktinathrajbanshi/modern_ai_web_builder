@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAppContext } from "../context/AppContext";
 import PromptInput from "../components/PromptInput";
 import { homeTags } from "../assets/assets";
@@ -14,6 +14,10 @@ const HomePage = () => {
     handleDelete,
     logout,
   } = useAppContext();
+
+  useEffect(() => {
+    loadProjects();
+  }, [loadProjects]);
 
   return (
     <div
@@ -95,8 +99,10 @@ const HomePage = () => {
           {!loadProjects && projects.length > 0 && (
             <div className="mt-12 w-full">
               <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10">
-                <p>All Projects</p>
-                <span>
+                <p className="text-xs font-medium uppercase text-zinc-100 tracking-widest">
+                  All Projects
+                </p>
+                <span className="text-xs text-zinc-100 font-normal">
                   {projects.length}{" "}
                   {projects.length === 1 ? "project" : "projects"}
                 </span>
