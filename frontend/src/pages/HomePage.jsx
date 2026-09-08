@@ -1,10 +1,19 @@
 import React from "react";
 import { useAppContext } from "../context/AppContext";
 import PromptInput from "../components/PromptInput";
+import { homeTags } from "../assets/assets";
 
 const HomePage = () => {
-  const { user, projects, loadingProjects, generatingProject, loadProjects } =
-    useAppContext();
+  const {
+    user,
+    projects,
+    loadingProjects,
+    generatingProject,
+    loadProjects,
+    handleGenerate,
+    handleDelete,
+    logout,
+  } = useAppContext();
 
   return (
     <div
@@ -22,6 +31,7 @@ const HomePage = () => {
         <div className="flex items-center gap-4 text-sm font-medium text-zinc-300">
           <span>{user?.name}</span>
           <button
+            onClick={logout}
             className="py-1.5 px-3 border border-white/20 text-white hover:bg-white/10
           text-xs rounded-md cursor-pointer bg-transparent"
           >
@@ -56,12 +66,27 @@ const HomePage = () => {
           {/* Prompt input with glassmorphic variant  */}
           <div className="w-full mt-6">
             <PromptInput
-              onSubmit={() => {}}
-              loading={false}
+              onSubmit={handleGenerate}
+              loading={generatingProject}
               placeholder="Create a portfolio website..."
               variant="glass"
               autoFocus
             />
+          </div>
+
+          {/* Scrolling Marquee tags  */}
+          <div className="masked-marquee w-full mt-4 max-w-2xl overflow-hidden py-1">
+            <div className="animate-marquee gap-3">
+              {homeTags.map(() => (
+                <button
+                  key={i}
+                  onClick={() => handleGenerate(tag)}
+                  disabled={generatingProject}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
