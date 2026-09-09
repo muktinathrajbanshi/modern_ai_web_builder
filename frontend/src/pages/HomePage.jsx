@@ -103,9 +103,19 @@ const HomePage = () => {
                   All Projects
                 </p>
                 <span className="text-xs text-zinc-100 font-normal">
-                  {projects.length}{" "}
+                  {projects.length}
                   {projects.length === 1 ? "project" : "projects"}
                 </span>
+              </div>
+
+              <div className="space-y-2 max-h-[80vh] overflow-y-auto pr-1">
+                {projects.map((p) => (
+                  <div
+                    key={p._id}
+                    className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 flex
+                  items-center justify-between group hover:border-white/20 hover:bg-white/10 cursor-pointer backdrop-blur-md transition-all"
+                  ></div>
+                ))}
               </div>
             </div>
           )}
