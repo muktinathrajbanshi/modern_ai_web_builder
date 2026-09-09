@@ -2,8 +2,12 @@ import React, { useEffect } from "react";
 import { useAppContext } from "../context/AppContext";
 import PromptInput from "../components/PromptInput";
 import { homeTags } from "../assets/assets";
+import { useNavigate } from "react-router-dom";
+import { ClockIcon } from "lucide-react";
 
 const HomePage = () => {
+  const navigate = useNavigate();
+
   const {
     user,
     projects,
@@ -114,7 +118,20 @@ const HomePage = () => {
                     key={p._id}
                     className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 flex
                   items-center justify-between group hover:border-white/20 hover:bg-white/10 cursor-pointer backdrop-blur-md transition-all"
-                  ></div>
+                    onClick={() => navigate(`/builder/${p._id}`)}
+                  >
+                    <div className="flex-1 min-w-0">
+                      <p className="test-sm font-medium text-white truncate">
+                        {p.name}
+                      </p>
+                      <div className="flex items-center gap-3 mt-0.5">
+                        <span>
+                          <ClockIcon size={10} />
+                        </span>
+                      </div>
+                    </div>
+                    <div></div>
+                  </div>
                 ))}
               </div>
             </div>
