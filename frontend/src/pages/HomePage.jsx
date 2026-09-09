@@ -4,6 +4,7 @@ import PromptInput from "../components/PromptInput";
 import { homeTags } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
 import { ClockIcon } from "lucide-react";
+import moment from "moment";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -100,7 +101,7 @@ const HomePage = () => {
           </div>
 
           {/* All Projects  */}
-          {!loadProjects && projects.length > 0 && (
+          {!loadingProjects && projects.length > 0 && (
             <div className="mt-12 w-full">
               <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10">
                 <p className="text-xs font-medium uppercase text-zinc-100 tracking-widest">
@@ -125,8 +126,12 @@ const HomePage = () => {
                         {p.name}
                       </p>
                       <div className="flex items-center gap-3 mt-0.5">
-                        <span>
+                        <span className="text-xs text-zinc-300 flex items-center gap-1">
                           <ClockIcon size={10} />
+                          {moment(p.updatedAt || p.createdAt).fromNow()}
+                        </span>
+                        <span className="text-xs text-white/60 font-medium">
+                          v{p.version}
                         </span>
                       </div>
                     </div>
