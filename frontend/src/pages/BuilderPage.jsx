@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const BuilderPage = () => {
   const { id } = useParams();
@@ -19,6 +19,25 @@ const BuilderPage = () => {
     loadProject,
     logout,
   } = useAppContext();
+
+  useEffect(() => {
+    if (!id) return;
+    loadProject(id);
+  }, [id, loadProject]);
+
+  useEffect(() => {
+    if (!id || !activeProject) return;
+    if (
+      activeProject.status === "pending" ||
+      activeProject.status === "generating"
+    ) {
+      const interval = setInterval(() => {
+        loadProject(id, true);
+      }, 1500);
+
+      return () => clearInterval(interval);
+    }
+  }, [id, loadProject]);
 
   return <div>BuilderPage</div>;
 };
