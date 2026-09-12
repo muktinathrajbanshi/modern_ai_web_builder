@@ -22,7 +22,12 @@ const BuilderHeader = ({
           <ArrowLeftIcon size={16} />
         </button>
         <img src="/logo.svg" alt="img" className="invert size-5" />
-        <span>{projectName}</span>
+        <span className="text-sm font-semibold truncate max-w-38 md:max-w-50">
+          {projectName}
+        </span>
+        <span className="text-[10px] px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-500 font-medium">
+          v{version}
+        </span>
       </div>
     </header>
   );
