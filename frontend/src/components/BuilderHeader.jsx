@@ -1,4 +1,9 @@
-import { ArrowLeftIcon, Code2Icon, EyeIcon } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  Code2Icon,
+  ExternalLinkIcon,
+  EyeIcon,
+} from "lucide-react";
 
 const BuilderHeader = ({
   projectName,
@@ -34,7 +39,7 @@ const BuilderHeader = ({
         <button
           onClick={onToggleShowCode}
           className={`inline-flex items-center justify-center gap-1.5 py-1.5 px-3 border border-zinc-200 text-zinc-600
-        hover:bg-zinc-100 hover:text-zinc-900 text-xs font-medium rounded-lg cursor-pointer bg-white`}
+        hover:bg-zinc-100 hover:text-zinc-900 text-xs font-medium rounded-lg cursor-pointer bg-white ${showCode ? "bg-zinc-100 text-zinc-900" : ""}`}
         >
           {showCode ? (
             <>
@@ -45,6 +50,14 @@ const BuilderHeader = ({
               <Code2Icon size={13} /> Preview
             </>
           )}
+        </button>
+        <button
+          onClick={onOpenPreview}
+          className="inline-flex items-center justify-center gap-1.5 py-1.5 px-3 border border-zinc-200 text-zinc-600
+        hover:bg-zinc-100 hover:text-zinc-900 text-xs font-medium rounded-lg cursor-pointer
+        bg-white"
+        >
+          <ExternalLinkIcon size={13} /> Open Preview
         </button>
       </div>
     </header>
