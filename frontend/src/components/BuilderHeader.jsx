@@ -1,4 +1,4 @@
-import { ArrowLeftIcon } from "lucide-react";
+import { ArrowLeftIcon, Code2Icon, EyeIcon } from "lucide-react";
 
 const BuilderHeader = ({
   projectName,
@@ -28,6 +28,24 @@ const BuilderHeader = ({
         <span className="text-[10px] px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-500 font-medium">
           v{version}
         </span>
+      </div>
+
+      <div className="flex items-center gap-1.5">
+        <button
+          onClick={onToggleShowCode}
+          className={`inline-flex items-center justify-center gap-1.5 py-1.5 px-3 border border-zinc-200 text-zinc-600
+        hover:bg-zinc-100 hover:text-zinc-900 text-xs font-medium rounded-lg cursor-pointer bg-white`}
+        >
+          {showCode ? (
+            <>
+              <EyeIcon size={13} /> Preview
+            </>
+          ) : (
+            <>
+              <Code2Icon size={13} /> Preview
+            </>
+          )}
+        </button>
       </div>
     </header>
   );
