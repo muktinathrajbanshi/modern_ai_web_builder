@@ -71,9 +71,17 @@ const BuilderHeader = ({
           {publishing ? (
             <Loader2Icon size={13} className="animate-spin" />
           ) : (
-            <GlobeIcon />
-          )}
+            <GlobeIcon size={13} />
+          )}{" "}
+          Publish
         </button>
+
+        <button
+          onClick={onDownload}
+          className="inline-flex items-center justify-center gap-1.5 px-3 border
+        border-zinc-200 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 text-xs font-medium
+        rounded-lg cursor-pointer bg-white"
+        ></button>
       </div>
     </header>
   );
