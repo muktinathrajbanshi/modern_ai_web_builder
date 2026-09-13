@@ -1,6 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import { useEffect, useState } from "react";
+import Loading from "../components/Loading";
+import BuilderHeader from "../components/BuilderHeader";
 
 const BuilderPage = () => {
   const { id } = useParams();
@@ -37,9 +39,35 @@ const BuilderPage = () => {
 
       return () => clearInterval(interval);
     }
-  }, [id, loadProject]);
+  }, [id, loadProject, activeProject]);
 
-  return <div>BuilderPage</div>;
+  const handleOpenPreview = () => {
+    if(!id) return;
+    window.open(`/preview/${id}`, "_blank")
+  }
+
+
+  if(loadingActiveProject || !activeProject){
+    return <Loading />
+  }
+
+
+
+  return (
+    <div className="h-screen flex flex-col bg-white overflow-hidden text-zinc-900 relative">
+      {/* Top Bar Header  */}
+      <BuilderHeader 
+        projectName={activeProject.name}
+        version={activeProject.version}
+        showCode={showCode}
+        publishing={publishing}
+        onToggleShowCode={() => setShowCode(!showCode)}
+        onOpenPreview={}
+      />
+
+      {/* Main Layout  */}
+    </div>
+  )
 };
 
 export default BuilderPage;
