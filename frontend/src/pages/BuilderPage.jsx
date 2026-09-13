@@ -8,8 +8,8 @@ const BuilderPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [leftTab, setLeftTab] = useState("chat");
-  const [publishing, setPublishing] = useState("false");
-  const [publishUrl, setPublishUrl] = useState("null");
+  const [publishing, setPublishing] = useState(false);
+  const [publishUrl, setPublishUrl] = useState(null);
 
   const {
     activeProject,
@@ -25,7 +25,7 @@ const BuilderPage = () => {
   useEffect(() => {
     if (!id) return;
     loadProject(id);
-  }, [id, loadProject]);
+  }, [id]);
 
   useEffect(() => {
     if (!id || !activeProject) return;
@@ -42,32 +42,37 @@ const BuilderPage = () => {
   }, [id, loadProject, activeProject]);
 
   const handleOpenPreview = () => {
-    if(!id) return;
-    window.open(`/preview/${id}`, "_blank")
+    if (!id) return;
+    window.open(`/preview/${id}`, "_blank");
+  };
+
+  const handlePublish = async () => {};
+
+  const handleDownload = async () => {};
+
+  if (loadingActiveProject || !activeProject) {
+    return <Loading />;
   }
-
-
-  if(loadingActiveProject || !activeProject){
-    return <Loading />
-  }
-
-
 
   return (
     <div className="h-screen flex flex-col bg-white overflow-hidden text-zinc-900 relative">
       {/* Top Bar Header  */}
-      <BuilderHeader 
+      <BuilderHeader
         projectName={activeProject.name}
         version={activeProject.version}
         showCode={showCode}
         publishing={publishing}
         onToggleShowCode={() => setShowCode(!showCode)}
-        onOpenPreview={}
+        onOpenPreview={handleOpenPreview}
+        onPublish={handlePublish}
+        onDownload={handleDownload}
+        onBack={() => navigate("/")}
+        onLogout={logout}
       />
 
       {/* Main Layout  */}
     </div>
-  )
+  );
 };
 
 export default BuilderPage;
