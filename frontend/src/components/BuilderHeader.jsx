@@ -1,6 +1,7 @@
 import {
   ArrowLeftIcon,
   Code2Icon,
+  DownloadIcon,
   ExternalLinkIcon,
   EyeIcon,
   GlobeIcon,
@@ -81,7 +82,18 @@ const BuilderHeader = ({
           className="inline-flex items-center justify-center gap-1.5 px-3 border
         border-zinc-200 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 text-xs font-medium
         rounded-lg cursor-pointer bg-white"
-        ></button>
+        >
+          <DownloadIcon size={13} /> Export
+        </button>
+
+        <button
+          onClick={onLogout}
+          className="inline-flex items-center justify-center gap-1.5 px-3 border
+        border-zinc-200 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 text-xs font-medium
+        rounded-lg cursor-pointer bg-white"
+        >
+          Sign out
+        </button>
       </div>
     </header>
   );
