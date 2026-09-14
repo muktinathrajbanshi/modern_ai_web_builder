@@ -46,7 +46,7 @@ const BuilderHeader = ({
         >
           {showCode ? (
             <>
-              <EyeIcon size={13} /> Preview
+              <EyeIcon size={13} /> Code
             </>
           ) : (
             <>

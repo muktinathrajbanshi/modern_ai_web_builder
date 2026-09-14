@@ -71,6 +71,15 @@ const BuilderPage = () => {
       />
 
       {/* Main Layout  */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Left Sidebar  */}
+        <div className="w-[320px] shrink-0 flex flex-col border-r border-zinc-200 bg-white">
+          {/* Sidebar Tabs  */}
+          <div className="flex border-b border-zinc-100"></div>
+        </div>
+
+        {/* Preview / Code Area  */}
+      </div>
     </div>
   );
 };
