@@ -3,6 +3,7 @@ import { useAppContext } from "../context/AppContext";
 import { useEffect, useState } from "react";
 import Loading from "../components/Loading";
 import BuilderHeader from "../components/BuilderHeader";
+import { FolderTreeIcon, MessageSquareIcon } from "lucide-react";
 
 const BuilderPage = () => {
   const { id } = useParams();
@@ -81,6 +82,14 @@ const BuilderPage = () => {
               className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium cursor-pointer ${leftTab === "chat" ? "text-zinc-900 border-b-2 border-zinc-900" : "text-zinc-400 hover:text-zinc-700"}`}
             >
               <MessageSquareIcon size={13} /> Chat
+            </button>
+
+            <button
+              onClick={() => setLeftTab("files")}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs 
+              font-medium cursor-pointer ${leftTab === "files" ? "text-zinc-900 border-b-2 border-zinc-900" : "text-zinc-400 hover:text-zinc-700"}`}
+            >
+              <FolderTreeIcon size={13} /> Files
             </button>
           </div>
         </div>
