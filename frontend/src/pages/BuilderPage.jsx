@@ -75,7 +75,14 @@ const BuilderPage = () => {
         {/* Left Sidebar  */}
         <div className="w-[320px] shrink-0 flex flex-col border-r border-zinc-200 bg-white">
           {/* Sidebar Tabs  */}
-          <div className="flex border-b border-zinc-100"></div>
+          <div className="flex border-b border-zinc-100">
+            <button
+              onClick={() => setLeftTab("chat")}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium cursor-pointer ${leftTab === "chat" ? "text-zinc-900 border-b-2 border-zinc-900" : "text-zinc-400 hover:text-zinc-700"}`}
+            >
+              <MessageSquareIcon size={13} /> Chat
+            </button>
+          </div>
         </div>
 
         {/* Preview / Code Area  */}
