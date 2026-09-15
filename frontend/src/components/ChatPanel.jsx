@@ -1,3 +1,4 @@
+import { BotMessageSquareIcon, UserIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 const ChatPanel = ({ messages, onSend, loading }) => {
@@ -18,6 +19,33 @@ const ChatPanel = ({ messages, onSend, loading }) => {
             </p>
           </div>
         )}
+
+        {messages.map((msg, i) => (
+          <div key={i}>
+            <div className="flex gap-2.5 items-start">
+              <div className="shrink-0 w-6 h-6 rounded-md flex items-center justify-center mt-0.5 bg-zinc-50">
+                {msg.role === "user" ? (
+                  <UserIcon size={14} className="text-zinc-500" />
+                ) : (
+                  <BotMessageSquareIcon size={14} className="text-zinc-700" />
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-medium text-zinc-500 mb-1 uppercase tracking-wider">
+                  {msg.role === "user" ? "You" : "AI"}
+                </p>
+                <p className="text-[13px] text-zinc-700 leading- tracking-wider whitespace-pre-wrap wrap-break-word">
+                  {msg.content.split("- `/").map(() => (
+                    <span key={i} className="block mt-3">
+                      <span className={i === 0 ? "hidden" : ""}>- `/</span>
+                      {text}
+                    </span>
+                  ))}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Input  */}
