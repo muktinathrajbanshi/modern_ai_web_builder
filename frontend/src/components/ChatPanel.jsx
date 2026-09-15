@@ -1,4 +1,4 @@
-import { BotMessageSquareIcon, UserIcon } from "lucide-react";
+import { BotIcon, BotMessageSquareIcon, UserIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 const ChatPanel = ({ messages, onSend, loading }) => {
@@ -46,6 +46,27 @@ const ChatPanel = ({ messages, onSend, loading }) => {
             </div>
           </div>
         ))}
+
+        {loading && (
+          <div className="flex gap-2.5 items-start">
+            <div
+              className="shrink-0 w-6 h-6 rounded-md flex items-center justify-center
+                mt-0.5 bg-zinc-900/5"
+            >
+              <BotIcon size={13} className="text-zinc-900" />
+            </div>
+            <div className="flex-1">
+              <p className="text-[11px] font-medium text-zinc-400 mb-2 uppercase tracking-wider">
+                AI
+              </p>
+              <div className="dot-loader">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Input  */}
