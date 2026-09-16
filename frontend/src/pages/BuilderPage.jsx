@@ -22,11 +22,8 @@ const BuilderPage = () => {
     setShowCode,
     loadProject,
     logout,
+    chatLoading,
   } = useAppContext();
-
-  const handleChat = () => {};
-
-  const [chatLoading, setChatLoading] = useState(false);
 
   useEffect(() => {
     if (!id) return;
