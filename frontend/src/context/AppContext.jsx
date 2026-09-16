@@ -200,7 +200,12 @@ export function AppContextProvider({ children }) {
         } else {
           toast.success(`Updated to version ${data.version}`);
         }
-      } catch (error) {}
+      } catch (err) {
+        console.error("Revision request failed:", err);
+        toast.error(err?.response?.data?.error || "Revision request failed");
+      } finally {
+        setChatLoading(false);
+      }
     },
     [activeProject, user],
   );
