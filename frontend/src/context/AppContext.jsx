@@ -185,6 +185,20 @@ export function AppContextProvider({ children }) {
     [user],
   );
 
+  const handleChat = useCallback(
+    async (prompt) => {
+      if (!activeProject || !user) return;
+      setChatLoading(true);
+      try {
+        const { data } = await api.post(
+          `/api/projects/${activeProject._id}/chat`,
+          { prompt },
+        );
+      } catch (error) {}
+    },
+    [activeProject, user],
+  );
+
   return (
     <AppContext.Provider
       value={{
