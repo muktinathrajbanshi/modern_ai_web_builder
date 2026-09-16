@@ -23,6 +23,7 @@ const BuilderPage = () => {
     loadProject,
     logout,
     chatLoading,
+    handleChat,
   } = useAppContext();
 
   useEffect(() => {
