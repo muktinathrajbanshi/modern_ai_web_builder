@@ -1,3 +1,4 @@
+import { FileCodeIcon, FileTextIcon } from "lucide-react";
 import { Children, useMemo } from "react";
 
 function buildTree(paths) {
@@ -26,6 +27,16 @@ function buildTree(paths) {
   return root;
 }
 
+function getFileIcon(name) {
+  if (name.endsWith(".css"))
+    return <FileTextIcon size={14} className="text-sky-500" />;
+  if (name.endsWith(".jsx") || name.endsWith(".js"))
+    return <FileCodeIcon size={14} className="text-amber-500" />;
+  if (name.endsWith(".json"))
+    return <FileTextIcon size={14} className="text-emerald-500" />;
+  return <FileTextIcon size={14} className="text-zinc-400" />;
+}
+
 function TreeItem({ node, activeFile, onFileSelect, depth = 0 }) {
   const isActive = node.path === activeFile;
 
@@ -51,6 +62,22 @@ function TreeItem({ node, activeFile, onFileSelect, depth = 0 }) {
       </div>
     );
   }
+
+  return (
+    <button
+      onClick={() => onFileSelect(node.path)}
+      className={`w-full flex items-center gap-2 py-1.5 px-2
+    text-xs transition-colors rounded-md cursor-pointer ${
+      isActive
+        ? "bg-zinc-100 text-zinc-950 font-medium"
+        : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-900"
+    }`}
+      style={{ paddingLeft: `${depth * 12 + 8}px` }}
+    >
+      <p>file icon</p>
+      <span className="truncate">{node.name}</span>
+    </button>
+  );
 }
 
 const FileExplorer = ({ files, activeFile, onFileSelect }) => {
@@ -65,7 +92,12 @@ const FileExplorer = ({ files, activeFile, onFileSelect }) => {
         Files
       </p>
       {tree.map((node) => (
-        <p>tree item</p>
+        <TreeItem
+          key={node.path}
+          node={node}
+          activeFile={activeFile}
+          onFileSelect={onFileSelect}
+        />
       ))}
     </div>
   );
