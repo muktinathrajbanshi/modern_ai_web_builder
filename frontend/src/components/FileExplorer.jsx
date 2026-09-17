@@ -1,4 +1,4 @@
-import { FileCodeIcon, FileTextIcon } from "lucide-react";
+import { FileCodeIcon, FileTextIcon, FolderOpenIcon } from "lucide-react";
 import { Children, useMemo } from "react";
 
 function buildTree(paths) {
@@ -74,7 +74,7 @@ function TreeItem({ node, activeFile, onFileSelect, depth = 0 }) {
     }`}
       style={{ paddingLeft: `${depth * 12 + 8}px` }}
     >
-      <p>file icon</p>
+      {getFileIcon(node.name)}
       <span className="truncate">{node.name}</span>
     </button>
   );
