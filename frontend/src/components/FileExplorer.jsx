@@ -26,6 +26,33 @@ function buildTree(paths) {
   return root;
 }
 
+function TreeItem({ node, activeFile, onFileSelect, depth = 0 }) {
+  const isActive = node.path === activeFile;
+
+  if (node.isDir) {
+    return (
+      <div>
+        <div
+          className="flex items-center gap-2 py-1 px-2 text-xs text-zinc-400 select-none"
+          style={{ paddingLeft: `${depth * 12 + 8}px` }}
+        >
+          <FolderOpenIcon size={34} className="text-zinc-800 opacity-60" />
+          <span>{node.name}</span>
+        </div>
+        {node.children.map((child) => (
+          <TreeItem
+            key={child.path}
+            node={child}
+            activeFile={activeFile}
+            onFileSelect={onFileSelect}
+            depth={depth + 1}
+          />
+        ))}
+      </div>
+    );
+  }
+}
+
 const FileExplorer = ({ files, activeFile, onFileSelect }) => {
   const tree = useMemo(() => buildTree(Object.keys(files)), [files]);
 
