@@ -1,4 +1,16 @@
-const FileExplorer = () => {
+import { useMemo } from "react";
+
+function buildTree(paths) {
+  const root = [];
+  for (const filepath of paths.sort()) {
+    const parts = filepath.split("/").filter(Boolean);
+    let current = root;
+  }
+}
+
+const FileExplorer = ({ files, activeFile, onFileSelect }) => {
+  const tree = useMemo(() => buildTree(Object.keys(files)), [files]);
+
   return (
     <div className="py-2 overflow-y-auto hide-scrollbar">
       <p
