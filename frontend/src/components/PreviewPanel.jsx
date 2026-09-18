@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { SandpackProvider } from "@codesandbox/sandpack-react"
 
 const PreviewPanel = ({ project, activeFile, showCode }) => {
   const [showErrorOverlay, setShowErrorOverlay] = useState(true);
@@ -9,8 +10,26 @@ const PreviewPanel = ({ project, activeFile, showCode }) => {
   );
 
   const currentKey = `${project._id}-${project.version}`;
+  if(prevProjectKey !== currentKey){
+    setPrevProjectKey(currentKey);
+    setLiveFiles(project.files)
+  }
 
-  return <div></div>;
+  const sandpackFiles = useMemo(() => {
+    const spFiles = {};
+    for (const [path, content] of Object.entries(liveFiles)) {
+
+    }
+  }, [liveFiles, activeFile])
+
+  return (
+    <div className="h-full w-full">
+        <SandpackProvider key={project._id} template="react" 
+        files={} customSetup={} options={} theme={}>
+
+        </SandpackProvider>
+    </div>
+  )
 };
 
 export default PreviewPanel;
