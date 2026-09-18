@@ -15,17 +15,28 @@ const PreviewPanel = ({ project, activeFile, showCode }) => {
     setLiveFiles(project.files)
   }
 
+  // Convert liveFiles to Sandpack format
   const sandpackFiles = useMemo(() => {
     const spFiles = {};
     for (const [path, content] of Object.entries(liveFiles)) {
-
+        const fileCode = typeof content === "string" ? content : content?.content || "";
+        spFiles[path] = {
+            code: fileCode,
+            active: path === activeFile,
+        }
     }
+    return spFiles;
   }, [liveFiles, activeFile])
+
+// Detect dependencies from import statements using liveFiles
+const dependencies = useMemo(() => {
+
+}, [liveFiles])
 
   return (
     <div className="h-full w-full">
         <SandpackProvider key={project._id} template="react" 
-        files={} customSetup={} options={} theme={}>
+        files={spFiles} customSetup={} options={} theme={}>
 
         </SandpackProvider>
     </div>
