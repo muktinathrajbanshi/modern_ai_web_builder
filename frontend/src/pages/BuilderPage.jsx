@@ -120,7 +120,7 @@ const BuilderPage = () => {
 
         {/* Preview / Code Area  */}
         <div className="flex-1 overflow-hidden">
-          {activeProject.status === "pending" ||
+          {activeProject.status !== "pending" ||
           activeProject.status === "generating" ||
           activeProject.status === "failed" ? (
             <Loading />
