@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { SandpackProvider } from "@codesandbox/sandpack-react"
+import { detectDependencies } from "../utils/sandpackUtils";
 
 const PreviewPanel = ({ project, activeFile, showCode }) => {
   const [showErrorOverlay, setShowErrorOverlay] = useState(true);
@@ -30,13 +31,24 @@ const PreviewPanel = ({ project, activeFile, showCode }) => {
 
 // Detect dependencies from import statements using liveFiles
 const dependencies = useMemo(() => {
-
+  return detectDependencies(liveFiles)
 }, [liveFiles])
 
   return (
     <div className="h-full w-full">
         <SandpackProvider key={project._id} template="react" 
-        files={spFiles} customSetup={} options={} theme={}>
+        files={spFiles} 
+        customSetup={dependencies} 
+        options={{
+          externalResources: [
+            "https://cdn.tailwindcss.com",
+            "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
+          ],
+          classes: {
+            "sp-wrapper": "sp-wrapper",
+          }
+        }} 
+        theme={}>
 
         </SandpackProvider>
     </div>
