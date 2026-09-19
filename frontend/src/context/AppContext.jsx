@@ -8,6 +8,7 @@ import {
 import api from "../api/api";
 import toast from "react-hot-toast";
 import { Navigate, useNavigate } from "react-router-dom";
+import debounce from "lodash.debounce";
 
 const AppContext = createContext(undefined);
 
@@ -207,6 +208,24 @@ export function AppContextProvider({ children }) {
         setChatLoading(false);
       }
     },
+    [activeProject, user],
+  );
+
+  const debouncedSave = React.useMemo(
+    () =>
+      debounce(async (files, id) => {
+        try {
+          await api.put(`/api/projects/${id}/files`, { files });
+        } catch (error) {
+          console.error("Failed fo auto-save files:", err);
+          toast.error("Failed to save code modifications");
+        }
+      }, 1000),
+    [],
+  );
+
+  const updateProjectFiles = useCallback(
+    async (params) => {},
     [activeProject, user],
   );
 
