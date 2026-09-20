@@ -1,6 +1,18 @@
-import { useMemo, useState } from "react";
-import { SandpackProvider } from "@codesandbox/sandpack-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { SandpackProvider, useSandpack } from "@codesandbox/sandpack-react";
 import { detectDependencies } from "../utils/sandpackUtils";
+
+// Watches for file edits inside Sandpack editor and saves changes to DB & live state
+function SandpackFileWatcher({ onLiveFilesChange }) {
+  const { sandpack } = useSandpack();
+  const { files } = sandpack;
+  const { activeProject, updateProjectFiles } = useAppContext();
+
+  const activeProjectRef = useRef(activeProject);
+  useEffect(() => {
+    activeProjectRef.current = activeProject;
+  }, [activeProject]);
+}
 
 const PreviewPanel = ({ project, activeFile, showCode }) => {
   const [showErrorOverlay, setShowErrorOverlay] = useState(true);
@@ -67,7 +79,12 @@ const PreviewPanel = ({ project, activeFile, showCode }) => {
             error: "#ef4444",
             errorSurface: "#fef2f2",
           },
-          font: {},
+          font: {
+            body: "'Urbanist', system-ui, -apple-system, sans-serif",
+            mono: "'Geist Mono', ui-monospace, monospace",
+            size: "13px",
+            lineHeight: "1.6",
+          },
         }}
       ></SandpackProvider>
     </div>

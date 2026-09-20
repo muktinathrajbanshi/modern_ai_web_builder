@@ -224,9 +224,18 @@ export function AppContextProvider({ children }) {
     [],
   );
 
+  useEffect(() => {
+    return () => {
+      debouncedSave.cancel();
+    };
+  }, [debouncedSave]);
+
   const updateProjectFiles = useCallback(
-    async (params) => {},
-    [activeProject, user],
+    async (files) => {
+      if (!activeProject || !user) return;
+      debouncedSave(files, activeProject._id);
+    },
+    [activeProject, user, debouncedSave],
   );
 
   return (
@@ -251,6 +260,7 @@ export function AppContextProvider({ children }) {
         handleGenerate,
         handleDelete,
         logout,
+        updateProjectFiles,
       }}
     >
       {children}
