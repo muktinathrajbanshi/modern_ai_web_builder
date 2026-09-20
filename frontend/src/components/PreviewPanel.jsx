@@ -27,8 +27,18 @@ function SandpackFileWatcher({ onLiveFilesChange }) {
         typeof project.files[path] === "string"
           ? project.files[path]
           : project.files[path]?.content;
+      if (originalContent !== undefined && originalContent !== fileCode) {
+        hasChanges = true;
+      }
+    }
+
+    // Sync live files to parent
+    onLiveFilesChange(updatedFiles);
+    if (hasChanges) {
+      updateProjectFiles(updatedFiles);
     }
   }, [files]);
+  return null;
 }
 
 const PreviewPanel = ({ project, activeFile, showCode }) => {
@@ -44,6 +54,19 @@ const PreviewPanel = ({ project, activeFile, showCode }) => {
     setPrevProjectKey(currentKey);
     setLiveFiles(project.files);
   }
+
+  const handleLiveFilesChange = (newFiles) => {
+    setLiveFiles((prev) => {
+      let changed = false;
+      for (const [p, code] of Object.entries(newFiles)) {
+        if (prev[p] !== code) {
+          changed = true;
+          break;
+        }
+      }
+      return changed ? newFiles : prev;
+    });
+  };
 
   // Convert liveFiles to Sandpack format
   const sandpackFiles = useMemo(() => {
@@ -103,7 +126,9 @@ const PreviewPanel = ({ project, activeFile, showCode }) => {
             lineHeight: "1.6",
           },
         }}
-      ></SandpackProvider>
+      >
+        <SandpackFileWatcher onLiveFilesChange={handleLiveFilesChange} />
+      </SandpackProvider>
     </div>
   );
 };
