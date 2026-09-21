@@ -1,6 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { SandpackProvider, useSandpack } from "@codesandbox/sandpack-react";
+import {
+  SandpackCodeEditor,
+  SandpackLayout,
+  SandpackPreview,
+  SandpackProvider,
+  useSandpack,
+} from "@codesandbox/sandpack-react";
 import { detectDependencies } from "../utils/sandpackUtils";
+import SandpackErrorMonitor from "./SandpackErrorMonitor";
 
 // Watches for file edits inside Sandpack editor and saves changes to DB & live state
 function SandpackFileWatcher({ onLiveFilesChange }) {
@@ -128,6 +135,31 @@ const PreviewPanel = ({ project, activeFile, showCode }) => {
         }}
       >
         <SandpackFileWatcher onLiveFilesChange={handleLiveFilesChange} />
+        <SandpackErrorMonitor onErrorChange={setShowErrorOverlay} />
+        <SandpackLayout
+          style={{
+            height: "100%",
+            border: "none",
+            borderRadius: 0,
+            background: "transparent",
+          }}
+        >
+          {showCode && (
+            <SandpackCodeEditor
+              showTabs
+              showLineNumbers
+              showInlineErrors
+              wrapContent
+              style={{ height: "100%", flex: 1, minWidth: 0 }}
+            />
+          )}
+
+          <SandpackPreview
+            showNavigator={false}
+            showRefreshButton
+            showOpenInCodeSandbox={false}
+          />
+        </SandpackLayout>
       </SandpackProvider>
     </div>
   );

@@ -19,9 +19,10 @@ const SandpackErrorMonitor = ({ onErrorChange }) => {
         return;
       }
     }
+    onErrorChange(true);
   }, [error, onErrorChange]);
 
-  return <div></div>;
+  return null;
 };
 
 export default SandpackErrorMonitor;
