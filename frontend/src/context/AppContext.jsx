@@ -43,7 +43,7 @@ export function AppContextProvider({ children }) {
 
   useEffect(() => {
     checkSession();
-  }, [checkSession]);
+  }, []);
 
   const login = async (email, password) => {
     try {

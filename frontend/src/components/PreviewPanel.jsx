@@ -8,6 +8,7 @@ import {
 } from "@codesandbox/sandpack-react";
 import { detectDependencies } from "../utils/sandpackUtils";
 import SandpackErrorMonitor from "./SandpackErrorMonitor";
+import { useAppContext } from "../context/AppContext";
 
 // Watches for file edits inside Sandpack editor and saves changes to DB & live state
 function SandpackFileWatcher({ onLiveFilesChange }) {
@@ -99,7 +100,7 @@ const PreviewPanel = ({ project, activeFile, showCode }) => {
       <SandpackProvider
         key={project._id}
         template="react"
-        files={spFiles}
+        files={sandpackFiles}
         customSetup={dependencies}
         options={{
           externalResources: [
