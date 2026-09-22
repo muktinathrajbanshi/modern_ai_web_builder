@@ -1,0 +1,25 @@
+import { XIcon } from "lucide-react";
+import toast from "react-hot-toast";
+
+const PublishModal = ({ publishUrl, onClose }) => {
+  const handleCopyLink = () => {
+    if (!publishUrl) return;
+    navigator.clipboard.writeText(publishUrl);
+    toast.success("Public link copied to clipboard!");
+  };
+
+  return (
+    <div className="absolute inset-0 bg-zinc-950/40 backdrop-blur-xs flex items-center justify-center z-50">
+      <div className="bg-white border border-zinc-200 shadow-lg rounded-lg rounded-xl max-w-md w-full p-6 mx-4 relative">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-900 cursor-pointer"
+        >
+          <XIcon size={16} />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default PublishModal;

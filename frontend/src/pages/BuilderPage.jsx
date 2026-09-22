@@ -7,6 +7,7 @@ import { FolderTreeIcon, MessageSquareIcon } from "lucide-react";
 import ChatPanel from "../components/ChatPanel";
 import FileExplorer from "../components/FileExplorer";
 import PreviewPanel from "../components/PreviewPanel";
+import AgentProgressDashboard from "../components/AgentProgressDashboard";
 
 const BuilderPage = () => {
   const { id } = useParams();
@@ -123,7 +124,7 @@ const BuilderPage = () => {
         <div className="flex-1 overflow-hidden">
           {activeProject.status === "pending" ||
           activeProject.status === "generating" ? (
-            <Loading />
+            <AgentProgressDashboard project={activeProject} />
           ) : activeProject.status === "failed" ? (
             <div className="h-full flex items-center justify-center text-red-500">
               Failed to generate project.
