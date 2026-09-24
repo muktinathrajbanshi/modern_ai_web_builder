@@ -11,6 +11,7 @@ import AgentProgressDashboard from "../components/AgentProgressDashboard";
 import PublishModal from "../components/PublishModal";
 import api from "../api/api";
 import toast from "react-hot-toast";
+import { exportProjectZip } from "../utils/exportProject";
 
 const BuilderPage = () => {
   const { id } = useParams();
@@ -67,10 +68,15 @@ const BuilderPage = () => {
     } catch (err) {
       console.error("Published failed:", err);
       toast.error(err?.response?.data?.error || "Published failed");
+    } finally {
+      setPublishing(false);
     }
   };
 
-  const handleDownload = async () => {};
+  const handleDownload = async () => {
+    if (!activeProject) return;
+    exportProjectZip(activeProject);
+  };
 
   if (loadingActiveProject || !activeProject) {
     return <Loading />;
