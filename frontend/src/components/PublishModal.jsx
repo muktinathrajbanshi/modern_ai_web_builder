@@ -17,6 +17,15 @@ const PublishModal = ({ publishUrl, onClose }) => {
         >
           <XIcon size={16} />
         </button>
+
+        <div className="mb-6">
+          <h3 className="text-lg font-medium text-zinc-900 mb-1">
+            Your website is live!
+          </h3>
+          <p className="text-sm text-zinc-500">
+            Anyone with the link below can view your published site.
+          </p>
+        </div>
       </div>
     </div>
   );
