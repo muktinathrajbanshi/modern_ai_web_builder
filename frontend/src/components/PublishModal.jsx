@@ -26,6 +26,27 @@ const PublishModal = ({ publishUrl, onClose }) => {
             Anyone with the link below can view your published site.
           </p>
         </div>
+
+        <div className="space-y-4">
+          <div>
+            <label
+              className="block text-[10px] font-semibold text-zinc-400
+            uppercase tracking-widest mb-1.5"
+            >
+              Published Link
+            </label>
+            <input
+              type="text"
+              readOnly
+              value={publishUrl}
+              className="w-full px-0 py-2 border-b
+            border-zinc-200 text-sm text-zinc-900 bg-transparent outline-none"
+            />
+          </div>
+          <div className="flex gap-2 pt-2">
+            <button>Copy Link</button>
+          </div>
+        </div>
       </div>
     </div>
   );
