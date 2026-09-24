@@ -9,6 +9,8 @@ import FileExplorer from "../components/FileExplorer";
 import PreviewPanel from "../components/PreviewPanel";
 import AgentProgressDashboard from "../components/AgentProgressDashboard";
 import PublishModal from "../components/PublishModal";
+import api from "../api/api";
+import toast from "react-hot-toast";
 
 const BuilderPage = () => {
   const { id } = useParams();
@@ -54,7 +56,19 @@ const BuilderPage = () => {
     window.open(`/preview/${id}`, "_blank");
   };
 
-  const handlePublish = async () => {};
+  const handlePublish = async () => {
+    if (!id) return;
+    setPublishing(true);
+    try {
+      await api.post(`/api/projects/${id}/publish`);
+      const url = `${window.location.origin}/publish/${id}`;
+      setPublishUrl(url);
+      toast.success("Website published successfully!");
+    } catch (err) {
+      console.error("Published failed:", err);
+      toast.error(err?.response?.data?.error || "Published failed");
+    }
+  };
 
   const handleDownload = async () => {};
 
