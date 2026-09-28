@@ -1,4 +1,22 @@
 const FullPagePreview = ({ files }) => {
+  const sandpackFiles = useMemo(() => {
+    const spFiles = {};
+    for (const [path, content] of Object.entries(liveFiles)) {
+      const fileCode =
+        typeof content === "string" ? content : content?.content || "";
+      spFiles[path] = {
+        code: fileCode,
+        active: path === activeFile,
+      };
+    }
+    return spFiles;
+  }, [liveFiles, activeFile]);
+
+  // Detect dependencies from import statements using liveFiles
+  const dependencies = useMemo(() => {
+    return detectDependencies(liveFiles);
+  }, [liveFiles]);
+
   return (
     <div className="h-full w-full">
       <SandpackProvider
