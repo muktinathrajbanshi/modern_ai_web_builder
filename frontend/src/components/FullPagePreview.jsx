@@ -1,20 +1,26 @@
+import { useState } from "react";
+import { detectDependencies } from "../utils/sandpackUtils";
+
 const FullPagePreview = ({ files }) => {
+  const [showErrorOverlay, setShowErrorOverlay] = useState(true);
+
+  // Convert liveFiles to Sandpack format
   const sandpackFiles = useMemo(() => {
+    if (!files) return {};
+
     const spFiles = {};
-    for (const [path, content] of Object.entries(liveFiles)) {
-      const fileCode =
-        typeof content === "string" ? content : content?.content || "";
-      spFiles[path] = {
-        code: fileCode,
-        active: path === activeFile,
-      };
+    for (const [path, content] of Object.entries(files)) {
+      const fileCode = (spFiles[path] = {
+        code: content,
+      });
     }
     return spFiles;
-  }, [liveFiles, activeFile]);
+  }, [files]);
 
   // Detect dependencies from import statements using liveFiles
   const dependencies = useMemo(() => {
-    return detectDependencies(liveFiles);
+    if (!files) return {};
+    return detectDependencies(files);
   }, [liveFiles]);
 
   return (
