@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "../components/Loading";
+import { AlertCircleIcon } from "lucide-react";
 
 const PublishPage = () => {
   const { id } = useParams();
@@ -34,7 +35,12 @@ const PublishPage = () => {
 
   if (error || !project) {
     return (
-      <div className="h-screen w-screen flex flex-col items-center justify-center bg-zinc-50 px-4 text-center"></div>
+      <div className="h-screen w-screen flex flex-col items-center justify-center bg-zinc-50 px-4 text-center">
+        <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-red-600 mb-4">
+          <AlertCircleIcon size={24} />
+        </div>
+        <h1>Website Unavailable</h1>
+      </div>
     );
   }
 
