@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const PublishPage = () => {
@@ -6,6 +6,15 @@ const PublishPage = () => {
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchPublicProject = async () => {
+      const { data } = await api.get(`/api/projects/public/${id}`);
+      setProject(data);
+    };
+  }, [id]);
 
   return <div>Publish Page</div>;
 };
