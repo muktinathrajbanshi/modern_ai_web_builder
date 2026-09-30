@@ -11,8 +11,10 @@ const PublishPage = () => {
     if (!id) return;
 
     const fetchPublicProject = async () => {
-      const { data } = await api.get(`/api/projects/public/${id}`);
-      setProject(data);
+      try {
+        const { data } = await api.get(`/api/projects/public/${id}`);
+        setProject(data);
+      } catch (error) {}
     };
   }, [id]);
 
