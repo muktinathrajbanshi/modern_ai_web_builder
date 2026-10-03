@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { detectDependencies } from "../utils/sandpackUtils";
 import SandpackErrorMonitor from "./SandpackErrorMonitor";
-import { SandpackPreview } from "@codesandbox/sandpack-react";
+import {
+  SandpackLayout,
+  SandpackPreview,
+  SandpackProvider,
+} from "@codesandbox/sandpack-react";
 
 const FullPagePreview = ({ files }) => {
   const [showErrorOverlay, setShowErrorOverlay] = useState(true);
@@ -23,7 +27,7 @@ const FullPagePreview = ({ files }) => {
   const dependencies = useMemo(() => {
     if (!files) return {};
     return detectDependencies(files);
-  }, [liveFiles]);
+  }, [files]);
 
   return (
     <div className="h-screen w-screen bg-white overflow-hidden  ">
