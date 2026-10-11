@@ -11,6 +11,12 @@ app.use(express.json());
 
 app.get("/", (req, res) => res.send("Server is Live!"));
 
+// Centralized error handler
+app.use((err, _req, res, _next) => {
+  console.error(`[Error] ${err.message}`);
+  res.status(500).json({ error: err.message });
+});
+
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
