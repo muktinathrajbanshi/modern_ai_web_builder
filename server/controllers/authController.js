@@ -57,12 +57,15 @@ export async function login(req, res) {
     return;
   }
 
-  const trimmedEmail = email.toLowerCase().trim();
-  const existing = await User.findOne({ email: trimmedEmail });
-  if (existing) {
-    res
-      .status(400)
-      .json({ error: "An account with this email already exists" });
+  const user = await User.findOne({ email: email.toLowerCase().trim() });
+  if (!user) {
+    res.status(401).json({ error: "Invalid email or password" });
+    return;
+  }
+
+  const isValid = await user.comparePassword(password);
+  if (!isValid) {
+    res.status(401).json({ error: "Invalid email or password" });
     return;
   }
 
