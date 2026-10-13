@@ -11,6 +11,7 @@ const setSessionCookie = (req, payload) => {
     secure: process.env.NODE_END === "production",
     sameSite: "lax",
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    path: "/",
   });
 };
 
@@ -35,6 +36,16 @@ export async function register(req, res) {
     name,
     email: trimmedEmail,
     password,
+  });
+
+  setSessionCookie(res, { userId: user._id.toString(), email: user.email });
+
+  res.status(201).json({
+    user: {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+    },
   });
 }
 
