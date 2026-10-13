@@ -1,5 +1,10 @@
 import { User } from "../models/User.js";
 
+// Helper to set cookie
+const setSessionCookie = (req, payload) => {
+  const token = jwt.sign(payload);
+};
+
 export async function register(req, res) {
   const { name, email, password } = req.body;
 
