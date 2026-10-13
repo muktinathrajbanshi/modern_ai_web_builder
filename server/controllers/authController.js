@@ -49,7 +49,39 @@ export async function register(req, res) {
   });
 }
 
-export async function login(req, res) {}
+export async function login(req, res) {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    res.status(400).json({ error: "Email and password are required" });
+    return;
+  }
+
+  const trimmedEmail = email.toLowerCase().trim();
+  const existing = await User.findOne({ email: trimmedEmail });
+  if (existing) {
+    res
+      .status(400)
+      .json({ error: "An account with this email already exists" });
+    return;
+  }
+
+  const user = await User.create({
+    name,
+    email: trimmedEmail,
+    password,
+  });
+
+  setSessionCookie(res, { userId: user._id.toString(), email: user.email });
+
+  res.status(201).json({
+    user: {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+    },
+  });
+}
 
 export async function logout(req, res) {}
 
