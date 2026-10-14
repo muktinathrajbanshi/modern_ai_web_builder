@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 const JWT_SECRET = process.env.JWT_SECRET || "fallback_secret";
 
 // Helper to set cookie
-const setSessionCookie = (req, payload) => {
+const setSessionCookie = (res, payload) => {
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "30d" });
   res.cookie("token", token, {
     httpOnly: true,
@@ -102,4 +102,5 @@ export async function me(req, res) {
     res.status(404).json({ error: "User not found" });
     return;
   }
+  res.json({ user });
 }
