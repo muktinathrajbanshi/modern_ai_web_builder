@@ -80,6 +80,14 @@ export async function login(req, res) {
   });
 }
 
-export async function logout(req, res) {}
+export async function logout(_req, res) {
+  res.cookie("token", "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 0,
+    path: "/",
+  });
+}
 
 export async function me(req, res) {}
