@@ -88,6 +88,18 @@ export async function logout(_req, res) {
     maxAge: 0,
     path: "/",
   });
+  res.json({ success: true });
 }
 
-export async function me(req, res) {}
+export async function me(req, res) {
+  if (!res.user) {
+    res.status(401).json({ error: "Not authenticated" });
+    return;
+  }
+
+  const user = await User.findById(req.user.userId).select("-password");
+  if (!user) {
+    res.status(404).json({ error: "User not found" });
+    return;
+  }
+}
