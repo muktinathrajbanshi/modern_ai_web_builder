@@ -10,5 +10,15 @@ export function authMiddleware(req, res, next) {
   }
 
   try {
-  } catch (error) {}
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || "fallback_secret",
+    );
+    req.user = decoded;
+    next();
+  } catch (error) {
+    res
+      .status(401)
+      .json({ error: "Session expired or invalid. Please sign in again." });
+  }
 }
