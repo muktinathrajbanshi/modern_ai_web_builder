@@ -69,12 +69,6 @@ export async function login(req, res) {
     return;
   }
 
-  const user = await User.create({
-    name,
-    email: trimmedEmail,
-    password,
-  });
-
   setSessionCookie(res, { userId: user._id.toString(), email: user.email });
 
   res.status(201).json({
