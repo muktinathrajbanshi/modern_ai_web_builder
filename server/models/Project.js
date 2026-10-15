@@ -27,7 +27,11 @@ const ProjectSchema = new Schema(
     status: {
       type: String,
       enum: ["pending", "generating", "revising", "completed", "failed"],
+      default: "pending",
     },
+    filesPlanned: { type: [], default: [] },
+    filesGenerated: { type: [String], default: [] },
+    currentFile: { type: String, default: null },
   },
   { timestamps: true },
 );
