@@ -21,6 +21,13 @@ const ProjectSchema = new Schema(
       type: [MessageSchema],
       default: [],
     },
+    version: { type: Number, default: 0 },
+    owner: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    published: { type: Boolean, default: false },
+    status: {
+      type: String,
+      enum: ["pending", "generating", "revising", "completed", "failed"],
+    },
   },
   { timestamps: true },
 );
