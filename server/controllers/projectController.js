@@ -12,3 +12,11 @@ export async function runBackgroundGeneration(req, res) {}
 // GET /api/projects/:id
 // Get full project details
 export async function getProject(req, res) {}
+
+// DELETE /api/projects/:id
+// Delete a project.
+export async function deleteProject(req, res) {}
+
+// PUT /api/projects/:id/files
+// Update project files (manual edits).
+export async function deleteProjectFiles(req, res) {}
