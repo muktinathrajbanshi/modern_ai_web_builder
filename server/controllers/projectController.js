@@ -20,3 +20,11 @@ export async function deleteProject(req, res) {}
 // PUT /api/projects/:id/files
 // Update project files (manual edits).
 export async function deleteProjectFiles(req, res) {}
+
+// POST /api/projects/:id/publish
+// Mark a project as publicly published.
+export async function publishProject(req, res) {}
+
+// GET /api/projects/public/:id
+// Get a publicly published project details (without auth).
+export async function getPublicProject(req, res) {}
