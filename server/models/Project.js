@@ -1,5 +1,14 @@
 import mongoose, { Schema } from "mongoose";
 
+const MessageSchema = new Schema(
+  {
+    role: { type: String, enum: ["user", "assistant"], required: true },
+    content: { type: String, required: true },
+    timestamp: { type: Date, default: Date.now },
+  },
+  { _id: false },
+);
+
 const ProjectSchema = new Schema(
   {
     name: { type: String, required: true, default: "Untitled Project" },
@@ -7,6 +16,10 @@ const ProjectSchema = new Schema(
     files: {
       type: Schema.Types.Mixed,
       default: {},
+    },
+    messages: {
+      type: [MessageSchema],
+      default: [],
     },
   },
   { timestamps: true },
