@@ -28,6 +28,14 @@ export async function createProject(req, res) {
     status: "pending",
     filesPlanned: [],
   });
+
+  // Start background generation
+  runBackgroundGeneration(project._id.toString(), prompt).catch(() => {
+    console.error(
+      `[Background AI] Fatal generation error for project ${project._id}:`,
+      err,
+    );
+  });
 }
 
 // Background worker to progressive generate files and update database in real-time.
