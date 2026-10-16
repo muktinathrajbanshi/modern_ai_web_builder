@@ -58,7 +58,18 @@ export async function runBackgroundGeneration(projectId, prompt) {}
 
 // GET /api/projects
 // List all projects owned by the user (summary only, no file contents).
-export async function runBackgroundGeneration(req, res) {}
+export async function listProjects(req, res) {
+  if (!req.user) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+  const projects = await Project.find(
+    {
+      owner: req.user.userId,
+    },
+    { name: 1, description: 1, version: 1, createdAt: 1, updatedAt: 1 },
+  );
+}
 
 // GET /api/projects/:id
 // Get full project details
