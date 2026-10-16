@@ -1,6 +1,12 @@
 // POST /api/projects
 // Create a new project from an AI prompt.
-export async function createProject(req, res) {}
+export async function createProject(req, res) {
+  const { prompt } = req.body;
+  if (!prompt || typeof prompt !== "string") {
+    res.status(400).json({ error: "prompt is required" });
+    return;
+  }
+}
 
 // Background worker to progressive generate files and update database in real-time.
 export async function runBackgroundGeneration(projectId, prompt) {}
