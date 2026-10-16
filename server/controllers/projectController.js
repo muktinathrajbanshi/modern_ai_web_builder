@@ -36,6 +36,21 @@ export async function createProject(req, res) {
       err,
     );
   });
+
+  res.status(201).json({
+    _id: project._id,
+    name: project.name,
+    description: project.description,
+    files: {},
+    messages: project.messages,
+    version: project.status,
+    status: project.status,
+    filesPlanned: project.filesPlanned,
+    filesGenerated: project.filesGenerated,
+    currentFile: project.currentFile,
+    error: project.error,
+    createdAt: project.createdAt,
+  });
 }
 
 // Background worker to progressive generate files and update database in real-time.
