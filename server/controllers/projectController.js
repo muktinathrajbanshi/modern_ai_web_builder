@@ -1,3 +1,5 @@
+import { Project } from "../models/Project.js";
+
 // POST /api/projects
 // Create a new project from an AI prompt.
 export async function createProject(req, res) {
@@ -6,6 +8,26 @@ export async function createProject(req, res) {
     res.status(400).json({ error: "prompt is required" });
     return;
   }
+
+  if (!req.user) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+
+  // Create project in DB immediately with "pending" status
+  const project = await Project.create({
+    name: "Planning project...",
+    description: prompt,
+    files: {},
+    messages: [
+      { role: "user", content: prompt },
+      { role: "assistant", content: "Planning project structure..." },
+    ],
+    version: 0,
+    owner: req.user.userId,
+    status: "pending",
+    filesPlanned: [],
+  });
 }
 
 // Background worker to progressive generate files and update database in real-time.
