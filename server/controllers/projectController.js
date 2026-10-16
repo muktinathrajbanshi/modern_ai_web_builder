@@ -68,12 +68,34 @@ export async function listProjects(req, res) {
       owner: req.user.userId,
     },
     { name: 1, description: 1, version: 1, createdAt: 1, updatedAt: 1 },
-  );
+  ).sort({ updatedAt: -1 });
+
+  res.json(projects);
 }
 
 // GET /api/projects/:id
 // Get full project details
-export async function getProject(req, res) {}
+export async function getProject(req, res) {
+  if (!req.user) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+
+  const project = await Project.findOne({
+    _id: req.params.id,
+    owner: req.user.userId,
+  });
+
+  if (!project) {
+    res.status(404).json({ error: "Project not found" });
+    return;
+  }
+
+  const filesObj = {};
+  for (const [path, entry] of Object.entries(project.files)) {
+    filesObj[path] = entry.content;
+  }
+}
 
 // DELETE /api/projects/:id
 // Delete a project.
