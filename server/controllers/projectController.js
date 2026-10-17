@@ -145,6 +145,24 @@ export async function updateProjectFiles(req, res) {
     res.status(401).json({ error: "Unauthorized" });
     return;
   }
+
+  const project = await Project.findOne({
+    _id: req.params.id,
+    owner: req.user.userId,
+  });
+
+  if (!project) {
+    res.status(404).json({ error: "Project not found" });
+    return;
+  }
+
+  // Rebuild project files map with content & hashes
+  const newFiles = {};
+  for (const [path, content] of object.entries(files)) {
+    if (typeof content === "string") {
+      newFiles[path] = { content, hash: hashContent(content) };
+    }
+  }
 }
 
 // POST /api/projects/:id/publish
