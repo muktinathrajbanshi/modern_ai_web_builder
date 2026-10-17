@@ -1,4 +1,9 @@
 import { Project } from "../models/Project.js";
+import crypto from "crypto";
+
+function hashContent(content) {
+  return crypto.createHash("md5").update(content).digest("hex").slice(0, 12);
+}
 
 // POST /api/projects
 // Create a new project from an AI prompt.
@@ -158,11 +163,32 @@ export async function updateProjectFiles(req, res) {
 
   // Rebuild project files map with content & hashes
   const newFiles = {};
-  for (const [path, content] of object.entries(files)) {
+  for (const [path, content] of Object.entries(files)) {
     if (typeof content === "string") {
       newFiles[path] = { content, hash: hashContent(content) };
     }
   }
+
+  project.files = newFiles;
+  await project.save();
+
+  const filesObj = {};
+  for (const [path, entry] of Object.entries(project.files)) {
+    if (typeof content === "string") {
+      newFiles[path] = entry.content;
+    }
+  }
+
+  res.json({
+    _id: project._id,
+    name: project.name,
+    description: project.description,
+    files: filesObj,
+    messages: project.messages,
+    version: project.status,
+    createdAt: project.createdAt,
+    updatedAt: project.updatedAt,
+  });
 }
 
 // POST /api/projects/:id/publish
