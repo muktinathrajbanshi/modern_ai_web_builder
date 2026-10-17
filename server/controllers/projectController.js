@@ -134,7 +134,18 @@ export async function deleteProject(req, res) {
 
 // PUT /api/projects/:id/files
 // Update project files (manual edits).
-export async function deleteProjectFiles(req, res) {}
+export async function updateProjectFiles(req, res) {
+  const { files } = req.body;
+  if (!files || typeof files !== "object") {
+    res.status(400).json({ error: "files object is required" });
+    return;
+  }
+
+  if (!req.user) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+}
 
 // POST /api/projects/:id/publish
 // Mark a project as publicly published.
