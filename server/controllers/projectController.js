@@ -95,6 +95,22 @@ export async function getProject(req, res) {
   for (const [path, entry] of Object.entries(project.files)) {
     filesObj[path] = entry.content;
   }
+
+  res.json({
+    _id: project._id,
+    name: project.name,
+    description: project.description,
+    files: filesObj,
+    messages: project.messages,
+    version: project.status,
+    status: project.status,
+    filesPlanned: project.filesPlanned,
+    filesGenerated: project.filesGenerated,
+    currentFile: project.currentFile,
+    error: project.error,
+    createdAt: project.createdAt,
+    pudatedAt: project.updatedAt,
+  });
 }
 
 // DELETE /api/projects/:id
