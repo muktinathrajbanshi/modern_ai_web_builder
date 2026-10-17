@@ -109,13 +109,28 @@ export async function getProject(req, res) {
     currentFile: project.currentFile,
     error: project.error,
     createdAt: project.createdAt,
-    pudatedAt: project.updatedAt,
+    updatedAt: project.updatedAt,
   });
 }
 
 // DELETE /api/projects/:id
 // Delete a project.
-export async function deleteProject(req, res) {}
+export async function deleteProject(req, res) {
+  if (!req.user) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+
+  const result = await Project.findOneAndDelete({
+    _id: req.params.id,
+    owner: req.user.userId,
+  });
+  if (!result) {
+    res.status(404).json({ error: "Project not found" });
+    return;
+  }
+  res.json({ success: true });
+}
 
 // PUT /api/projects/:id/files
 // Update project files (manual edits).
