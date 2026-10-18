@@ -193,7 +193,17 @@ export async function updateProjectFiles(req, res) {
 
 // POST /api/projects/:id/publish
 // Mark a project as publicly published.
-export async function publishProject(req, res) {}
+export async function publishProject(req, res) {
+  if (!req.user) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+
+  const project = await Project.findOneAndUpdate(
+    { _id: req.params.id, owner: req.user.userId },
+    { published: true },
+  );
+}
 
 // GET /api/projects/public/:id
 // Get a publicly published project details (without auth).
