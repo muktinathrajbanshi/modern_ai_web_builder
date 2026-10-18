@@ -185,7 +185,7 @@ export async function updateProjectFiles(req, res) {
     description: project.description,
     files: filesObj,
     messages: project.messages,
-    version: project.status,
+    version: project.version,
     createdAt: project.createdAt,
     updatedAt: project.updatedAt,
   });
@@ -237,6 +237,6 @@ export async function getPublicProject(req, res) {
     name: project.name,
     description: project.description,
     files: filesObj,
-    version: project.status,
+    version: project.version,
   });
 }
