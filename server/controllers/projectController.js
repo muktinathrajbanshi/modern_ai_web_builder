@@ -202,9 +202,41 @@ export async function publishProject(req, res) {
   const project = await Project.findOneAndUpdate(
     { _id: req.params.id, owner: req.user.userId },
     { published: true },
+    { returnDocument: "after" },
   );
+
+  if (!project) {
+    res.status(404).json({ error: "Project not found" });
+    return;
+  }
+
+  res.json({ success: true, published: project.published });
 }
 
 // GET /api/projects/public/:id
 // Get a publicly published project details (without auth).
-export async function getPublicProject(req, res) {}
+export async function getPublicProject(req, res) {
+  const project = await Project.findById(req.params.id);
+  if (!project) {
+    res.status(404).json({ error: "Project not found" });
+    return;
+  }
+
+  if (!project.published) {
+    res.status(403).json({ error: "Project is not published yet" });
+    return;
+  }
+
+  const filesObj = {};
+  for (const [path, entry] of Object.entries(project.files)) {
+    filesObj[path] = entry.content;
+  }
+
+  res.json({
+    _id: project._id,
+    name: project.name,
+    description: project.description,
+    files: filesObj,
+    version: project.status,
+  });
+}
