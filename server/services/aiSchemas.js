@@ -9,5 +9,11 @@ export const FileOpSchema = z.object({
   op: z.enum(["create", "update", "delete"]),
   path: z.string(),
   content: z.string().nullable().optional(),
+  search: z.string().nullable().optional(),
   replace: z.string().nullable().optional(),
+});
+
+export const RevisionResultSchema = z.object({
+  operations: z.array(FileOpSchema),
+  description: z.string().default("Applied revisions"),
 });
