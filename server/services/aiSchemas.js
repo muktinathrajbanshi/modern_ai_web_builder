@@ -25,9 +25,14 @@ export const FilePlanSchema = z.object({
         path: z.string(),
         description: z.string(),
         exports: z.string().optional().default(""),
+        imports: z.array(z.string()).optional().default([]),
       }),
     ),
   ),
   projectName: z.string().default("Generated Project"),
   projectDescription: z.string().default("A React Project"),
+});
+
+export const FileCodeSchema = z.object({
+  code: z.string(),
 });
