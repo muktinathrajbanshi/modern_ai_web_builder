@@ -55,6 +55,13 @@ export async function generateProject(prompt, callbacks) {
       imports: [],
     });
   }
+
+  if (callbacks?.onPlan) {
+    await callbacks.onPlan(plan);
+  }
+  console.log(
+    `[AI] Phase 2: Generating ${plan.files.length} files in parallel (concurrency=${MAX_CONCURRENCY}): ${plan.files.map((f) => f.path).join(" , ")}`,
+  );
 }
 
 export async function reviseProject(prompt, manifest, relevantFiles) {}
