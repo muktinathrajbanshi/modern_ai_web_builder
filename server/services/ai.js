@@ -45,6 +45,16 @@ export async function generateProject(prompt, callbacks) {
       imports: ["./styles.css"],
     });
   }
+
+  if (!plan.files.find((f) => f.path === "/style.css")) {
+    plan.files.push({
+      path: "/style.css",
+      description:
+        "Global CSS: Google Font import, keyframe animations, utility classes",
+      exports: "none",
+      imports: [],
+    });
+  }
 }
 
 export async function reviseProject(prompt, manifest, relevantFiles) {}
