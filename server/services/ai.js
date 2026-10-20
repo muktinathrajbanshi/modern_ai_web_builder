@@ -62,6 +62,17 @@ export async function generateProject(prompt, callbacks) {
   console.log(
     `[AI] Phase 2: Generating ${plan.files.length} files in parallel (concurrency=${MAX_CONCURRENCY}): ${plan.files.map((f) => f.path).join(" , ")}`,
   );
+
+  const files = {};
+  let pendingFiles = plan.files.map((f) => ({ ...f }));
+
+  const maxRetryRounds = 2;
+
+  for (let round = 0; round <= maxRetryRounds; round++) {
+    if (pendingFiles.length === 0) {
+      `[AI] Retry round ${round}/${maxRetryRounds}`;
+    }
+  }
 }
 
 export async function reviseProject(prompt, manifest, relevantFiles) {}
