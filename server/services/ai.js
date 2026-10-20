@@ -33,7 +33,18 @@ export async function generateProject(prompt, callbacks) {
     model,
     schema: FilePlanSchema,
     system: FILE_PLAN_SYSTEM,
+    prompt: `Plan a React website for: ${prompt}`,
+    maxRetries: 2,
   });
+
+  if (!plan.files.find((f) => f.path === "/App.js")) {
+    plan.files.unshift({
+      path: "/App.js",
+      description: "Main application entry point",
+      exports: "default App",
+      imports: ["./styles.css"],
+    });
+  }
 }
 
 export async function reviseProject(prompt, manifest, relevantFiles) {}
