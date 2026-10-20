@@ -1,4 +1,7 @@
 import { createOpenAI } from "@ai-sdk/openai";
+import { generateObject } from "ai";
+import { FilePlanSchema } from "./aiSchemas.js";
+import { FILE_PLAN_SYSTEM } from "./prompts.js";
 
 // OpenRouter Model Client Setup
 const MODEL = process.env.OPENROUTER_MODEL || "openrouter/free";
@@ -21,6 +24,16 @@ async function generateSingleFile(
 
 // Generate project files: plan first, then build files in order with fallback retries
 
-export async function generateProject(prompt, callbacks) {}
+export async function generateProject(prompt, callbacks) {
+  // Phase 1: Plan
+  console.log(
+    `[AI] Phase 1: Planning file structure for: "${prompt.slice(0, 80)}..."`,
+  );
+  const { object: plan } = await generateObject({
+    model,
+    schema: FilePlanSchema,
+    system: FILE_PLAN_SYSTEM,
+  });
+}
 
 export async function reviseProject(prompt, manifest, relevantFiles) {}
