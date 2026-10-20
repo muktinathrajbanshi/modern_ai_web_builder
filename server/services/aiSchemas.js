@@ -17,3 +17,17 @@ export const RevisionResultSchema = z.object({
   operations: z.array(FileOpSchema),
   description: z.string().default("Applied revisions"),
 });
+
+export const FilePlanSchema = z.object({
+  files: z.array(
+    z.object(
+      z.object({
+        path: z.string(),
+        description: z.string(),
+        exports: z.string().optional().default(""),
+      }),
+    ),
+  ),
+  projectName: z.string().default("Generated Project"),
+  projectDescription: z.string().default("A React Project"),
+});
