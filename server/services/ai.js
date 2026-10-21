@@ -2,6 +2,7 @@ import { createOpenAI } from "@ai-sdk/openai";
 import { generateObject } from "ai";
 import { FilePlanSchema } from "./aiSchemas.js";
 import { FILE_PLAN_SYSTEM } from "./prompts.js";
+import pMap from "p-map";
 
 // OpenRouter Model Client Setup
 const MODEL = process.env.OPENROUTER_MODEL || "openrouter/free";
@@ -69,9 +70,27 @@ export async function generateProject(prompt, callbacks) {
   const maxRetryRounds = 2;
 
   for (let round = 0; round <= maxRetryRounds; round++) {
-    if (pendingFiles.length === 0) {
-      `[AI] Retry round ${round}/${maxRetryRounds}`;
+    if (pendingFiles.length === 0) break;
+    if (round > 0) {
+      console.log(
+        `[AI] Retry round ${round}/${maxRetryRounds} for ${pendingFiles.length} failed files: ${pendingFiles.map((f) => f.path).join(", ")}`,
+      );
     }
+
+    const results = await pMap(pendingFiles, async (file) => {
+      try {
+        if (callbacks?.onFileStart) {
+          await callbacks.onFileStart(file.path);
+        }
+
+        const singleResult = await generateSingleFile(
+          file,
+          plan.files,
+          prompt,
+          files,
+        );
+      } catch (error) {}
+    });
   }
 }
 
