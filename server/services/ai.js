@@ -115,6 +115,16 @@ export async function generateProject(prompt, callbacks) {
         failedFiles.push(entry.file);
       }
     }
+    pendingFiles = failedFiles;
+  }
+
+  if (pendingFiles.length > 0) {
+    const failedPaths = pendingFiles.map((f) => f.path).join(", ");
+    console.error(`[AI] Failed to generate ${pendingFiles.length}
+      files after all retry rounds: ${failedPaths}`);
+
+    if (pendingFiles.some((f) => f.path === "/App.js")) {
+    }
   }
 }
 
