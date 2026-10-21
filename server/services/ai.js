@@ -77,20 +77,44 @@ export async function generateProject(prompt, callbacks) {
       );
     }
 
-    const results = await pMap(pendingFiles, async (file) => {
-      try {
-        if (callbacks?.onFileStart) {
-          await callbacks.onFileStart(file.path);
-        }
+    const results = await pMap(
+      pendingFiles,
+      async (file) => {
+        try {
+          if (callbacks?.onFileStart) {
+            await callbacks.onFileStart(file.path);
+          }
 
-        const singleResult = await generateSingleFile(
-          file,
-          plan.files,
-          prompt,
-          files,
+          const singleResult = await generateSingleFile(
+            file,
+            plan.files,
+            prompt,
+            files,
+          );
+
+          if (callbacks?.onFileComplete) {
+            await callbacks.onFileComplete(file.path, singleResult.code);
+          }
+
+          return { success: true, file, result: singleResult };
+        } catch (error) {
+          return { success: false, file, error: err };
+        }
+      },
+      { concurrency: MAX_CONCURRENCY },
+    );
+    const failedFiles = [];
+    for (const entry of results) {
+      if (entry.success) {
+        const { path, code } = entry.result;
+        files[path.startsWith("/") ? path : "/" + path] = code;
+      } else {
+        console.warn(
+          `[AI] File ${entry.file.path} failed in round ${round}: ${entry.error?.message || entry.error}`,
         );
-      } catch (error) {}
-    });
+        failedFiles.push(entry.file);
+      }
+    }
   }
 }
 
