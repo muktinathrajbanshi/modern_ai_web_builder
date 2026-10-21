@@ -81,60 +81,72 @@ export async function generateProject(prompt, callbacks) {
       pendingFiles,
       async (file) => {
         try {
-          if (callbacks?.onFileStart){
-            await callbacks.onFileStart(file.path)
+          if (callbacks?.onFileStart) {
+            await callbacks.onFileStart(file.path);
           }
 
-          const singleResult = await generateSingleFile(file, plan.files, prompt, files)
+          const singleResult = await generateSingleFile(
+            file,
+            plan.files,
+            prompt,
+            files,
+          );
 
-          if(callbacks?.onFileComplete){
-            await callbacks.onFileComplete(file.path, singleResult.code)
+          if (callbacks?.onFileComplete) {
+            await callbacks.onFileComplete(file.path, singleResult.code);
           }
 
-          return {success: true, file, result: singleResult}
-
+          return { success: true, file, result: singleResult };
         } catch (error) {
-          return {success: false, file, error: err};
+          return { success: false, file, error: err };
         }
       },
-      {concurrency: MAX_CONCURRENCY}
-    )
+      { concurrency: MAX_CONCURRENCY },
+    );
     const failedFiles = [];
     for (const entry of results) {
       if (entry.success) {
-        const {path, code} = entry.result;
+        const { path, code } = entry.result;
         files[path.startsWith("/") ? path : "/" + path] = code;
       } else {
-        console.warn(`[AI] File ${entry.file.path} failed in round ${round}: ${entry.error?.message || entry.error}`);
-        failedFiles.push(entry.file)
+        console.warn(
+          `[AI] File ${entry.file.path} failed in round ${round}: ${entry.error?.message || entry.error}`,
+        );
+        failedFiles.push(entry.file);
       }
     }
     pendingFiles = failedFiles;
   }
 
-  if(pendingFiles.length > 0){
+  if (pendingFiles.length > 0) {
     const failedPaths = pendingFiles.map((f) => f.path).join(", ");
     console.error(`[AI] Failed to generate ${pendingFiles.length}
       files after all retry rounds: ${failedPaths}`);
 
-      if (pendingFiles.some((f) => f.path === "/App.js")){
-        const ext = file.path.split(".").pop()?.toLowerCase();
+    if (pendingFiles.some((f) => f.path === "/App.js")) {
+      const ext = file.path.split(".").pop()?.toLowerCase();
 
-        if(ext === "css"){
-          files[file.path] = `/* ${file.description} - Generation failed, please retry */\n`
-        }else {
-          files[file.path] = "import React from 'react';\n\n + `// ⚠️ This file could not be generated. Please retry.\n ` +
+      if (ext === "css") {
+        files[file.path] =
+          `/* ${file.description} - Generation failed, please retry */\n`;
+      } else {
+        files[file.path] =
+          "import React from 'react';\n\n" +
+          `// ⚠️ This file could not be generated. Please retry.\n ` +
           `// Purpose: ${file.description}\n\n` +
-          "export default function Placeholder() {\n" + 
+          "export default function Placeholder() {\n" +
           " return (\n" +
-            "  <div className='p-8 text-center text-zinc-400'>\n" +
-            " <p>⚠️ Component failed to generate. Please try again.</p>\n" +
-            " </div>\n" +
-            " );\n" +
-            "}\n";
-          }
+          "  <div className='p-8 text-center text-zinc-400'>\n" +
+          " <p>⚠️ Component failed to generate. Please try again.</p>\n" +
+          " </div>\n" +
+          " );\n" +
+          "}\n";
       }
+    }
+  }
 
+  if (!files["/App.js"]) {
+    throw new Error("AI did not generate /App.js entry point");
   }
 }
 
