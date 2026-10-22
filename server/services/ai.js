@@ -1,7 +1,15 @@
 import { createOpenAI } from "@ai-sdk/openai";
 import { generateObject } from "ai";
-import { FileCodeSchema, FilePlanSchema } from "./aiSchemas.js";
-import { buildFileCodeSystem, FILE_PLAN_SYSTEM } from "./prompts.js";
+import {
+  FileCodeSchema,
+  FilePlanSchema,
+  RevisionResultSchema,
+} from "./aiSchemas.js";
+import {
+  buildFileCodeSystem,
+  FILE_PLAN_SYSTEM,
+  REVISE_SYSTEM,
+} from "./prompts.js";
 import pMap from "p-map";
 import { normalizeContent } from "./contentNormalizer.js";
 import { validateAndFixCode } from "./codeValidator.js";
@@ -212,5 +220,23 @@ export async function reviseProject(prompt, manifest, relevantFiles) {
     for (const msg of recentMessages.slice(-3)) {
       contextParts.push(`${msg.role}: ${msg.content}`);
     }
+  }
+
+  contextParts.push(`\n## Revision Request\n${prompt}`);
+
+  console.log("[AI] Revising project...");
+
+  const { object: rawParsed } = await generateObject({
+    model,
+    schema: RevisionResultSchema,
+    system: REVISE_SYSTEM,
+    prompt: contextParts.join("\n"),
+    maxRetries: 2,
+  });
+
+  if (rawParsed && Array.isArray(rawParsed.operations)) {
+    rawParsed.operations = rawParsed.operations.map((op) => {
+      if (!op || typeof op !== "object") return op;
+    });
   }
 }
