@@ -199,4 +199,18 @@ export async function reviseProject(prompt, manifest, relevantFiles) {
     contextParts.push(`${f.path} (${f.hash}, ${f.size}B)`);
   }
   contextParts.push("```");
+
+  if (Object.keys(relevantFiles).length > 0) {
+    contextParts.push("\n## File Contents (for reference)");
+    for (const [path, content] of Object.entries(relevantFiles)) {
+      contextParts.push(`\n### ${path}\n\`\`\`\n${content}\n\`\`\``);
+    }
+  }
+
+  if (recentMessages.length > 0) {
+    contextParts.push("\n## Recent Conversation");
+    for (const msg of recentMessages.slice(-3)) {
+      contextParts.push(`${msg.role}: ${msg.content}`);
+    }
+  }
 }
