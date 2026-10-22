@@ -1,8 +1,10 @@
 import { createOpenAI } from "@ai-sdk/openai";
 import { generateObject } from "ai";
-import { FilePlanSchema } from "./aiSchemas.js";
+import { FileCodeSchema, FilePlanSchema } from "./aiSchemas.js";
 import { buildFileCodeSystem, FILE_PLAN_SYSTEM } from "./prompts.js";
 import pMap from "p-map";
+import { normalizeContent } from "./contentNormalizer.js";
+import { validateAndFixCode } from "./codeValidator.js";
 
 // OpenRouter Model Client Setup
 const MODEL = process.env.OPENROUTER_MODEL || "openrouter/free";
@@ -27,6 +29,25 @@ async function generateSingleFile(
   const userMsg = `Project: ${prompt}\n\nWrite the complete code for: ${file.path}\nPurpose: ${file.description}`;
 
   console.log(`[AI] Creating file: ${file.path}...`);
+
+  const { object } = await generateObject({
+    model,
+    schema: FileCodeSchema,
+    system,
+    prompt: userMsg,
+    maxRetries: 2,
+  });
+
+  let code = normalizeContent(object.code);
+
+  if (code.trim().length === 0) {
+    throw new Error("Generated code is empty after normalization");
+  }
+
+  // Apply post-generation validation and auto-fixing
+  const validation = validateAndFixCode(code, file.path, {
+    allPlannedFiles: allFiles,
+  });
 }
 
 // Generate project files: plan first, then build files in order with fallback retries
