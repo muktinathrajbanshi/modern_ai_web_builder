@@ -1,7 +1,7 @@
 import { createOpenAI } from "@ai-sdk/openai";
 import { generateObject } from "ai";
 import { FilePlanSchema } from "./aiSchemas.js";
-import { FILE_PLAN_SYSTEM } from "./prompts.js";
+import { buildFileCodeSystem, FILE_PLAN_SYSTEM } from "./prompts.js";
 import pMap from "p-map";
 
 // OpenRouter Model Client Setup
@@ -21,7 +21,13 @@ async function generateSingleFile(
   allFiles,
   prompt,
   alreadyGeneratedFiles,
-) {}
+) {
+  const system = buildFileCodeSystem(allFiles, alreadyGeneratedFiles);
+
+  const userMsg = `Project: ${prompt}\n\nWrite the complete code for: ${file.path}\nPurpose: ${file.description}`;
+
+  console.log(`[AI] Creating file: ${file.path}...`);
+}
 
 // Generate project files: plan first, then build files in order with fallback retries
 
@@ -148,6 +154,8 @@ export async function generateProject(prompt, callbacks) {
   if (!files["/App.js"]) {
     throw new Error("AI did not generate /App.js entry point");
   }
+
+  return { files, description: plan.projectDescription };
 }
 
 export async function reviseProject(prompt, manifest, relevantFiles) {}
