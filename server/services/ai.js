@@ -48,6 +48,17 @@ async function generateSingleFile(
   const validation = validateAndFixCode(code, file.path, {
     allPlannedFiles: allFiles,
   });
+
+  code = validation.code;
+
+  if (validation.warnings.length > 0) {
+    console.log(
+      `[Validator] Code adjustments for ${file.path}:\n - ${validation.warnings.join("\n - ")}`,
+    );
+  }
+
+  console.log(`[AI] Created file: ${file.path} (${code.length} chars)`);
+  return { path: file.path, code };
 }
 
 // Generate project files: plan first, then build files in order with fallback retries
@@ -179,4 +190,13 @@ export async function generateProject(prompt, callbacks) {
   return { files, description: plan.projectDescription };
 }
 
-export async function reviseProject(prompt, manifest, relevantFiles) {}
+export async function reviseProject(prompt, manifest, relevantFiles) {
+  const contextParts = [];
+
+  contextParts.push("## Current Project Files (manifest)");
+  contextParts.push("```");
+  for (const f of manifest) {
+    contextParts.push(`${f.path} (${f.hash}, ${f.size}B)`);
+  }
+  contextParts.push("```");
+}
