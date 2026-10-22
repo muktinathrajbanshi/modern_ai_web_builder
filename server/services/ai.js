@@ -12,7 +12,10 @@ import {
 } from "./prompts.js";
 import pMap from "p-map";
 import { normalizeContent } from "./contentNormalizer.js";
-import { validateAndFixCode } from "./codeValidator.js";
+import {
+  validateAndFixCode,
+  validateRevisionContent,
+} from "./codeValidator.js";
 
 // OpenRouter Model Client Setup
 const MODEL = process.env.OPENROUTER_MODEL || "openrouter/free";
@@ -237,6 +240,35 @@ export async function reviseProject(prompt, manifest, relevantFiles) {
   if (rawParsed && Array.isArray(rawParsed.operations)) {
     rawParsed.operations = rawParsed.operations.map((op) => {
       if (!op || typeof op !== "object") return op;
+
+      let opStr = String(op.op || "")
+        .trim()
+        .toLowerCase();
+
+      if (["create", "add", "new"].includes(opStr)) op.op = "create";
+      else if (["update", "edit", "modify", "patch"].includes(opStr))
+        op.op = "update";
+      else if (["delete", "remove", "del", "rm"].includes(opStr))
+        op.op = "delete";
+
+      if (op.path && typeof op.path === "string" && !op.path.startsWith("/")) {
+        op.path = "/" + op.path;
+      }
+
+      if (op.content) op.content = normalizeContent(op.content);
+      if (op.search) op.search = normalizeContent(op.search);
+      if (op.replace) op.replace = normalizeContent(op.replace);
+
+      if (op.op === "create" && op.content) {
+        const validation = validateRevisionContent(
+          op.content,
+          op.path,
+          "create",
+        );
+        op.content = validation.content;
+        if (validation.warnings.length > 0) {
+        }
+      }
     });
   }
 }
