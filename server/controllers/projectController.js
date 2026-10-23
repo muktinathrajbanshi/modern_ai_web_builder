@@ -1,6 +1,7 @@
 import { Project } from "../models/Project.js";
 import crypto from "crypto";
 import { generateProject } from "../services/ai.js";
+import { timeStamp } from "console";
 
 function hashContent(content) {
   return crypto.createHash("md5").update(content).digest("hex").slice(0, 12);
@@ -68,6 +69,30 @@ export async function runBackgroundGeneration(projectId, prompt) {
         console.log(
           `[Background AI] Plan created for project ${projectId}. Planned ${plan.files.length} files.`,
         );
+        const fileList = plan.files
+          .map(() => `- \`${f.path}\`: ${f.description}`)
+          .join("/n");
+
+        await Project.findByIdAndUpdate(projectId, {
+          name: plan.projectName || "Generated Project",
+          status: "generating",
+          filesPlanned: plan.files,
+          $push: {
+            messages: {
+              role: "assistant",
+              content: `Planned website structure:\n${fileList}`,
+              timeStamp: new Date(),
+            },
+          },
+        });
+      },
+      onFileStart: async (path) => {
+        console.log(
+          `[Background AI] Starting file ${path} for project ${projectId}`,
+        );
+        await Project.findByIdAndUpdate(projectId, {
+          currentFile: path,
+        });
       },
     });
   } catch (error) {}
