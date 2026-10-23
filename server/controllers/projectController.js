@@ -1,5 +1,6 @@
 import { Project } from "../models/Project.js";
 import crypto from "crypto";
+import { generateProject } from "../services/ai.js";
 
 function hashContent(content) {
   return crypto.createHash("md5").update(content).digest("hex").slice(0, 12);
@@ -59,7 +60,18 @@ export async function createProject(req, res) {
 }
 
 // Background worker to progressive generate files and update database in real-time.
-export async function runBackgroundGeneration(projectId, prompt) {}
+export async function runBackgroundGeneration(projectId, prompt) {
+  try {
+    console.log(`[Background AI] Starting generation for project ${projectId}`);
+    const result = await generateProject(prompt, {
+      onPlan: async (plan) => {
+        console.log(
+          `[Background AI] Plan created for project ${projectId}. Planned ${plan.files.length} files.`,
+        );
+      },
+    });
+  } catch (error) {}
+}
 
 // GET /api/projects
 // List all projects owned by the user (summary only, no file contents).
