@@ -94,6 +94,22 @@ export async function runBackgroundGeneration(projectId, prompt) {
           currentFile: path,
         });
       },
+      onFileComplete: async (path) => {
+        console.log(`[Background AI] Finished file ${path} for project ${projectId}`);
+
+        const project = await Project.findById(projectId);
+
+        if(project){
+          project.files = project.files || {};
+          project.files[path] = { content: code, hash: hashContent(code) };
+          project.filesGenerated = [...(project.filesGenerated ||), path];
+          project.messages.push({
+            role: "assistant",
+            content: `Created file "${path}"`,
+            timestamp: new Date(),
+          })
+        }
+      }
     });
   } catch (error) {}
 }
