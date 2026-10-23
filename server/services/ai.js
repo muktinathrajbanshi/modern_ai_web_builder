@@ -277,7 +277,15 @@ export async function reviseProject(prompt, manifest, relevantFiles) {
           op.path,
           "update",
         );
+        op.replace = validation.content;
+        if (validation.warnings.length > 0) {
+          console.log(
+            `[Validator] Revision Update adjustments for ${op.path}:\n -${validation.warnings.join("\n - ")}`,
+          );
+        }
       }
+      return op;
     });
   }
+  return rawParsed;
 }
