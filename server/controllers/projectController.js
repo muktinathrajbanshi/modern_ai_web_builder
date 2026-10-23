@@ -107,10 +107,28 @@ export async function runBackgroundGeneration(projectId, prompt) {
             role: "assistant",
             content: `Created file "${path}"`,
             timestamp: new Date(),
-          })
+          });
+          project.currentFile = null;
+          project.markModified("files");
+          await project.save();
         }
       }
     });
+    console.log(`[Background AI] Successfully generated project ${projectId}`);
+
+    const project = await Project.findById(projectId);
+    if(project){
+      project.status = "completed";
+      project.version = 1;
+      if(result.description){
+        project.name = result.description;
+      }
+      project.messages.push({
+        role: "assistant",
+        content: `Website generation complete! You can view and edit the files.`,
+        timestamp: new Date(),
+      })
+    }
   } catch (error) {}
 }
 
