@@ -128,8 +128,22 @@ export async function runBackgroundGeneration(projectId, prompt) {
         content: `Website generation complete! You can view and edit the files.`,
         timestamp: new Date(),
       })
+      await project.save();
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error(`[Background AI] Fatal generation error for project ${projectId}:`, err);
+    await Project.findByIdAndUpdate(projectId, {
+      status: "failed",
+      error: err.message,
+      $push: {
+        messages: {
+          role: "assistant",
+          content: `❌ Generation failed: ${err.message}`,
+          timestamp: new Date(),
+        }
+      }
+    })
+  }
 }
 
 // GET /api/projects
