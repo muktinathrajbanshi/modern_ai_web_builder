@@ -2,6 +2,10 @@ import { Project } from "../models/Project.js";
 
 export function buildManifest(files) {
   const manifest = [];
+  for (const [path, entry] of Object.entries(files)) {
+    manifest.push({ path, hash: entry.hash, size: entry.content.length });
+  }
+  return manifest;
 }
 
 // POST /api/projects/:id/chat
