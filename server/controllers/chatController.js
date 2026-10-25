@@ -1,5 +1,9 @@
 import { Project } from "../models/Project.js";
 
+export function buildManifest(files) {
+  const manifest = [];
+}
+
 // POST /api/projects/:id/chat
 // Send a revision prompt and return updated project.
 
@@ -25,4 +29,17 @@ export async function chat(req, res) {
     res.status(404).json({ error: "Project not found" });
     return;
   }
+
+  // Set status to revising and save user prompt immediately
+  ((project.status = "revising"),
+    project.messages.push({
+      role: "user",
+      content: prompt,
+      timestamp: new Date(),
+    }));
+  await project.save();
+
+  try {
+    // Build compact manifest (path + hash + size) instead of sending all code
+  } catch (error) {}
 }
