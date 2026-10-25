@@ -45,5 +45,23 @@ export async function chat(req, res) {
 
   try {
     // Build compact manifest (path + hash + size) instead of sending all code
+    const manifest = buildManifest(project.files);
+
+    // Include all file contents so that AI can do accurate search/replace
+    const relevantFiles = {};
+    for (const [path, entry] of Object.entries(project.files)) {
+      relevantFiles[path] = entry.content;
+    }
+
+    // Recent messages for context (last 4 max)
+    const recentMessages = project.messages.slice(-4).map((m) => ({
+      role: m.role,
+      content: m.content,
+    }));
+
+    console.log(
+      `[AI] Revising project ${project._id}: "${prompt.slice(0, 80)}...` +
+        `(${manifest.length} files, manifest ~${JSON.stringify(manifest).length} chars)`,
+    );
   } catch (error) {}
 }
