@@ -1,4 +1,6 @@
 import { Project } from "../models/Project.js";
+import { reviseProject } from "../services/ai.js";
+import { applyOperations } from "../services/diff.js";
 
 export function buildManifest(files) {
   const manifest = [];
@@ -63,5 +65,30 @@ export async function chat(req, res) {
       `[AI] Revising project ${project._id}: "${prompt.slice(0, 80)}...` +
         `(${manifest.length} files, manifest ~${JSON.stringify(manifest).length} chars)`,
     );
+
+    // Call AI with manifest + relevant files
+    const result = await reviseProject(
+      prompt,
+      manifest,
+      relevantFiles,
+      recentMessages,
+    );
+
+    console.log(
+      `[AI] Got ${result.operations.length} operations: ${result.description}`,
+    );
+
+    // Apply operations to file map
+    const {
+      files: updatedFiles,
+      applied,
+      errors,
+    } = applyOperations(project.files, result.operations);
+
+    if (errors.length > 0) {
+      console.warn(`[Diff] Errors applying operations:`, errors);
+    }
+
+    // Update project in DB
   } catch (error) {}
 }
