@@ -90,5 +90,38 @@ export async function chat(req, res) {
     }
 
     // Update project in DB
+    project.files = updatedFiles;
+    project.markModified("files");
+    project.version += 1;
+    project.status = "completed";
+    project.messages.push({
+      role: "assistant",
+      content:
+        result.description +
+        (errors.length > 0
+          ? `\n\n Some operations failed: ${errors.join(", ")}`
+          : ""),
+    });
+
+    await project.save();
+
+    // Return updated project
+    const filesObj = {};
+    for (const [path, entry] of Object.entries(project.files)) {
+      filesObj[path] = entry.content;
+    }
+
+    res.json({
+      _id: project._id,
+      name: project.name,
+      description: project.description,
+      files: filesObj,
+      messages: project.messages,
+      version: project.version,
+      status: project.status,
+      applied,
+      errors,
+      aiDescription: result.description,
+    });
   } catch (error) {}
 }
