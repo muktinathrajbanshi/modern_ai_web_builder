@@ -28,7 +28,12 @@ const PromptInput = ({
     const trimmed = value.trim();
 
     if (!trimmed || loading) return;
-    onsubmit(trimmed);
+
+    if (typeof onSubmit !== "function") {
+      console.error("Please pass an onSubmit function to PromptInput.");
+      return;
+    }
+    onSubmit(trimmed);
     setValue("");
   };
 
