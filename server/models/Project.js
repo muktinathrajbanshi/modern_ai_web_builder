@@ -9,6 +9,14 @@ const MessageSchema = new Schema(
   { _id: false },
 );
 
+const PlannedFileSchema = new Schema(
+  {
+    path: { type: String, required: true },
+    description: { type: String, required: true },
+  },
+  { _id: false },
+);
+
 const ProjectSchema = new Schema(
   {
     name: { type: String, required: true, default: "Untitled Project" },
@@ -29,11 +37,11 @@ const ProjectSchema = new Schema(
       enum: ["pending", "generating", "revising", "completed", "failed"],
       default: "pending",
     },
-    filesPlanned: { type: [], default: [] },
+    filesPlanned: { type: [PlannedFileSchema], default: [] },
     filesGenerated: { type: [String], default: [] },
     currentFile: { type: String, default: null },
   },
   { timestamps: true },
 );
 
-export const User = mongoose.model("User", UserSchema);
+export const Project = mongoose.model("Project", ProjectSchema);
