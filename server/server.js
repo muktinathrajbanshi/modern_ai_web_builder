@@ -16,7 +16,7 @@ app.use(express.json());
 
 app.get("/", (req, res) => res.send("Server is Live!"));
 app.use("/api/auth", authRouter);
-app.use("api/projects", projectRouter);
+app.use("/api/projects", projectRouter);
 
 // Centralized error handler
 app.use((err, _req, res, _next) => {
