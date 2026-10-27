@@ -8,7 +8,7 @@ const setSessionCookie = (res, payload) => {
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "30d" });
   res.cookie("token", token, {
     httpOnly: true,
-    secure: process.env.NODE_END === "production",
+    secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     path: "/",
@@ -92,7 +92,8 @@ export async function logout(_req, res) {
 }
 
 export async function me(req, res) {
-  if (!res.user) {
+  const userId = req.user?.userId;
+  if (!userId) {
     return res.status(401).json({ error: "Not authenticated" });
   }
 
@@ -100,5 +101,5 @@ export async function me(req, res) {
   if (!user) {
     return res.status(404).json({ error: "User not found" });
   }
-  res.json({ user });
+  return res.json({ user });
 }
