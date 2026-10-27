@@ -93,14 +93,12 @@ export async function logout(_req, res) {
 
 export async function me(req, res) {
   if (!res.user) {
-    res.status(401).json({ error: "Not authenticated" });
-    return;
+    return res.status(401).json({ error: "Not authenticated" });
   }
 
   const user = await User.findById(req.user.userId).select("-password");
   if (!user) {
-    res.status(404).json({ error: "User not found" });
-    return;
+    return res.status(404).json({ error: "User not found" });
   }
   res.json({ user });
 }
