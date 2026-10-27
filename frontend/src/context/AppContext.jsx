@@ -217,7 +217,7 @@ export function AppContextProvider({ children }) {
         try {
           await api.put(`/api/projects/${id}/files`, { files });
         } catch (error) {
-          console.error("Failed fo auto-save files:", err);
+          console.error("Failed fo auto-save files:", error);
           toast.error("Failed to save code modifications");
         }
       }, 1000),
