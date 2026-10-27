@@ -37,7 +37,7 @@ export async function createProject(req, res) {
   });
 
   // Start background generation
-  runBackgroundGeneration(project._id.toString(), prompt).catch(() => {
+  runBackgroundGeneration(project._id.toString(), prompt).catch((err) => {
     console.error(
       `[Background AI] Fatal generation error for project ${project._id}:`,
       err,
@@ -71,7 +71,7 @@ export async function runBackgroundGeneration(projectId, prompt) {
         );
         const fileList = plan.files
           .map(() => `- \`${f.path}\`: ${f.description}`)
-          .join("/n");
+          .join("\n");
 
         await Project.findByIdAndUpdate(projectId, {
           name: plan.projectName || "Generated Project",
@@ -95,14 +95,16 @@ export async function runBackgroundGeneration(projectId, prompt) {
         });
       },
       onFileComplete: async (path) => {
-        console.log(`[Background AI] Finished file ${path} for project ${projectId}`);
+        console.log(
+          `[Background AI] Finished file ${path} for project ${projectId}`,
+        );
 
         const project = await Project.findById(projectId);
 
-        if(project){
+        if (project) {
           project.files = project.files || {};
           project.files[path] = { content: code, hash: hashContent(code) };
-          project.filesGenerated = [...(project.filesGenerated ||), path];
+          project.filesGenerated = [...(project.filesGenerated || []), path];
           project.messages.push({
             role: "assistant",
             content: `Created file "${path}"`,
@@ -112,26 +114,29 @@ export async function runBackgroundGeneration(projectId, prompt) {
           project.markModified("files");
           await project.save();
         }
-      }
+      },
     });
     console.log(`[Background AI] Successfully generated project ${projectId}`);
 
     const project = await Project.findById(projectId);
-    if(project){
+    if (project) {
       project.status = "completed";
       project.version = 1;
-      if(result.description){
+      if (result.description) {
         project.name = result.description;
       }
       project.messages.push({
         role: "assistant",
         content: `Website generation complete! You can view and edit the files.`,
         timestamp: new Date(),
-      })
+      });
       await project.save();
     }
   } catch (error) {
-    console.error(`[Background AI] Fatal generation error for project ${projectId}:`, err);
+    console.error(
+      `[Background AI] Fatal generation error for project ${projectId}:`,
+      err,
+    );
     await Project.findByIdAndUpdate(projectId, {
       status: "failed",
       error: err.message,
@@ -140,9 +145,9 @@ export async function runBackgroundGeneration(projectId, prompt) {
           role: "assistant",
           content: `❌ Generation failed: ${err.message}`,
           timestamp: new Date(),
-        }
-      }
-    })
+        },
+      },
+    });
   }
 }
 
