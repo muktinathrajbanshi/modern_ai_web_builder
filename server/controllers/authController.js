@@ -55,6 +55,16 @@ export async function login(req, res) {
 
     console.log("Login attempt:", email);
 
+    if (!email || !password) {
+      return res.status(400).json({
+        error: "Email and password are required",
+      });
+    }
+
+    const user = await User.findOne({
+      email: email.toLowerCase().trim(),
+    });
+
     if (!user) {
       console.log("DEBUG: User not found in MongoDB");
 
