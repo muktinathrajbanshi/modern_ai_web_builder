@@ -50,34 +50,50 @@ export async function register(req, res) {
 }
 
 export async function login(req, res) {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  if (!email || !password) {
-    res.status(400).json({ error: "Email and password are required" });
-    return;
-  }
+    console.log("Login attempt:", email);
 
-  const user = await User.findOne({ email: email.toLowerCase().trim() });
-  if (!user) {
-    res.status(401).json({ error: "Invalid email or password" });
-    return;
-  }
+    if (!user) {
+      console.log("DEBUG: User not found in MongoDB");
 
-  const isValid = await user.comparePassword(password);
-  if (!isValid) {
-    res.status(401).json({ error: "Invalid email or password" });
-    return;
-  }
+      return res.status(401).json({
+        error: "User not found",
+      });
+    }
 
-  setSessionCookie(res, { userId: user._id.toString(), email: user.email });
+    console.log("DEBUG: User found:", user.email);
 
-  res.status(201).json({
-    user: {
-      _id: user._id,
-      name: user.name,
+    const isValid = await user.comparePassword(password);
+
+    console.log("DEBUG: Password valid:", isValid);
+
+    if (!isValid) {
+      return res.status(401).json({
+        error: "Incorrect password",
+      });
+    }
+
+    setSessionCookie(res, {
+      userId: user._id.toString(),
       email: user.email,
-    },
-  });
+    });
+
+    return res.status(200).json({
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    console.error("Login controller error:", error);
+
+    return res.status(500).json({
+      error: "Internal server error",
+    });
+  }
 }
 
 export async function logout(_req, res) {
