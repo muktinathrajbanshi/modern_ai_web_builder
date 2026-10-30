@@ -33,9 +33,18 @@ export function AppContextProvider({ children }) {
   const checkSession = async () => {
     try {
       const { data } = await api.get("/api/auth/me");
+
       setUser(data.user);
+
+      console.log("Session restored:", data.user.email);
     } catch (error) {
       setUser(null);
+
+      console.log(
+        "Session check failed:",
+        error.response?.status,
+        error.response?.data?.error,
+      );
     } finally {
       setLoadingUser(false);
     }
