@@ -1,7 +1,12 @@
 import React from "react";
 
 const FaltuPage = () => {
-  return <div>la k vako yesto haha</div>;
+  return (
+    <div>
+      <h1>Hait yar samasya</h1>
+      <p>k saro dukhha</p>
+    </div>
+  );
 };
 
 export default FaltuPage;
